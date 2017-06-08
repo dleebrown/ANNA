@@ -173,7 +173,10 @@ def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_valu
             #  strip off star num, radial velocity info
             known = normed_outputs[select_star[:, 0], 1:-1]
             proc_fluxes = preprocess_spectra(fluxes, interp_sn, sn_values, y_offsets)
-            session.run(queue_operation, feed_dict={image_data: proc_fluxes, known_params: known})
+            try:
+                session.run(queue_operation, feed_dict={image_data: proc_fluxes, known_params: known})
+            except tf.errors.CancelledError:
+                print('Queue closed, exiting training')
 
 
 parameters = read_param_file('ANNA.param')
@@ -183,12 +186,13 @@ with tf.name_scope('NETWORK_HYPERPARAMS'):
     batch_size = int(parameters['BATCH_SIZE1'])
     num_px = int(parameters['NUM_PX'])
     cl1_shape = np.fromstring(parameters['CONV1_SHAPE'], sep=', ', dtype=np.int32)
-    drop_prob = float(parameters['KEEP_PROB1'])
     fc1_num_weights = int(parameters['FC1_OUTDIM'])
     fc2_num_weights = int(parameters['FC2_OUTDIM'])
     num_outputs = int(parameters['NUM_OUTS'])
     known_params = tf.placeholder(tf.float32, shape=[None, num_outputs])
     image_data = tf.placeholder(tf.float32, shape=[None, num_px])
+    learning_rate = tf.placeholder(tf.float32)
+    dropout = tf.placeholder(tf.float32)
 
 # the input queue - handles building random batches and contains wrapper for preprocessing
 with tf.name_scope('INPUT_QUEUE'):
@@ -227,7 +231,7 @@ with tf.name_scope('FC1_TENSORS'):
 with tf.name_scope('FC1_LAYER'):
     fc1 = cv.layer_fc(input=flat_cl2, weights=fc1_weight)
     fc1_activate = cv.layer_activate(input=fc1, bias=fc1_bias, type='relu')
-    fc1_dropout = cv.layer_dropout(input=fc1_activate, keep_probability=drop_prob)
+    fc1_dropout = cv.layer_dropout(input=fc1_activate, keep_probability=dropout)
 
 # initialize weights for fully connected layer 2
 with tf.name_scope('FC2_TENSORS'):
@@ -241,7 +245,7 @@ with tf.name_scope('FC2_TENSORS'):
 with tf.name_scope('FC2_LAYER'):
     fc2 = cv.layer_fc(input=fc1_dropout, weights=fc2_weight)
     fc2_activate = cv.layer_activate(input=fc2, bias=fc2_bias, type='relu')
-    fc2_dropout = cv.layer_dropout(input=fc2_activate, keep_probability=drop_prob)
+    fc2_dropout = cv.layer_dropout(input=fc2_activate, keep_probability=dropout)
 
 # initialize weights for output layer of network
 with tf.name_scope('FC3_TENSORS'):
@@ -258,9 +262,8 @@ with tf.name_scope('FC3_LAYER'):
 with tf.name_scope('COST'):
     cost = cv.network_cost(predicted_vals=fc_output, known_vals=outputs_shaped, type='l2')
 
-# optimization function
 with tf.name_scope('OPTIMIZE'):
-    optimize = cv.network_optimize(cost, learn_rate=5e-5, optimizer='adam')
+    optimize = cv.network_optimize(cost, learn_rate=learning_rate, optimizer='adam')
 
 
 def train_neural_network(parameters):
@@ -272,49 +275,66 @@ def train_neural_network(parameters):
     fetch_size = int(parameters['NUM_FETCH'])
     wavelengths, normed_outputs, pix_values = read_known_binary('allspec_test_200_600', parameters, minvals, maxvals)
     interp_sn = interpolate_sn(sn_template_file, wavelengths)
-    begin_time = time.time()
+    # definition of the training loop in order to allow for multistage training
 
-    session = tf.Session()
-
-    options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
-    run_metadata = tf.RunMetadata()
-
-    session.run(tf.global_variables_initializer())
-    coordinator = tf.train.Coordinator()
-
-    with tf.device("/cpu:0"):
-        num_threads = 1
-        enqueue_threads = [threading.Thread(target=add_to_queue, args=(session, queue_operation, coordinator,
+    def train_loop(iterations, learn_rate, keep_prob):
+        begin_time = time.time()
+        coordinator = tf.train.Coordinator()
+        with tf.device("/cpu:0"):
+            num_threads = 1
+            enqueue_threads = [threading.Thread(target=add_to_queue, args=(session, queue_operation, coordinator,
                                                                  normed_outputs, pix_values, sn_range, interp_sn,
                                                                  y_off_range, fetch_size)) for i in range(num_threads)]
-        for i in enqueue_threads:
-            i.start()
-    time.sleep(1)
-    for i in range(int(parameters['NUM_TRAIN_ITERS1'])):
-        if i % 1000 == 0:
+            for i in enqueue_threads:
+                i.start()
+        time.sleep(1)
+        for i in range(iterations):
+            if (i+1) % 1000 == 0:  # prints a timeline object and current cost
+                session.run(optimize, options=options, run_metadata=run_metadata, feed_dict={learning_rate: learn_rate,
+                                                                                             dropout: keep_prob})
+                # Create the Timeline object, and write it to a json file
+                fetched_timeline = timeline.Timeline(run_metadata.step_stats)
+                chrome_trace = fetched_timeline.generate_chrome_trace_format()
+                with open('timeline_01.json', 'w') as f:
+                    f.write(chrome_trace)
+                test_cost = session.run(cost, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
+                print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '+str(round(test_cost, 2)))
+            elif (i+1) % 100 == 0:  # just prints current cost
+                session.run(optimize, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
+                test_cost = session.run(cost, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
+                print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '+str(round(test_cost, 2)))
+            else:  # just runs optimize
+                session.run(optimize, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
+        coordinator.request_stop()
+        session.run(input_queue.close(cancel_pending_enqueues=True))
+        coordinator.join(enqueue_threads)
+        end_time = time.time()
+        return str(round(end_time-begin_time, 2))
 
-            session.run(optimize, options=options, run_metadata=run_metadata)
-            # Create the Timeline object, and write it to a json file
-            fetched_timeline = timeline.Timeline(run_metadata.step_stats)
-            chrome_trace = fetched_timeline.generate_chrome_trace_format()
-            with open('timeline_01.json', 'w') as f:
-                f.write(chrome_trace)
+    model_dir = '../repo_saved_models/model_200_250_200_600/save.ckpt'
 
-            #session.run(optimize)
-            print('done with batch ' + str(int(i)) + '/' + str(int(parameters['NUM_TRAIN_ITERS1'])))
-            test_cost = session.run(cost)
-            print('current cost: ' + str(round(test_cost, 2)))
-        elif i % 100 == 0:
-            session.run(optimize)
-            # Create the Timeline object, and write it to a json file
-            print('done with batch '+str(int(i))+'/'+str(int(parameters['NUM_TRAIN_ITERS1'])))
-            test_cost = session.run(cost)
-            print('current cost: '+str(round(test_cost, 2)))
-        else:
-            session.run(optimize)
-    coordinator.request_stop()
-    coordinator.join(enqueue_threads)
-    end_time = time.time()
-    print('execute time: '+str(round(end_time-begin_time, 2)))
+    # optimization function with control for continued training with different learning rate
+
+    session = tf.Session()
+    options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+    run_metadata = tf.RunMetadata()
+    session.run(tf.global_variables_initializer())
+    saver = tf.train.Saver()
+    execute_time = train_loop(int(parameters['NUM_TRAIN_ITERS1']), float(parameters['LEARN_RATE1']),
+                              float(parameters['KEEP_PROB1']))
+    save_path = saver.save(session, model_dir)
+    session.close()
+    print('Training stage 1 finished in '+execute_time+'s, model saved in '+save_path)
+    if parameters['DO_TRAIN2'] == 'YES':
+        print('Training stage 2 beginning, loading model...')
+        session = tf.Session()
+        saver = tf.train.Saver()
+        saver.restore(session, model_dir)
+        print('Model loaded, beginning training...')
+        execute_time = train_loop(int(parameters['NUM_TRAIN_ITERS2']), float(parameters['LEARN_RATE2']),
+                                  float(parameters['KEEP_PROB2']))
+        save_path = saver.save(session, model_dir)
+        session.close()
+        print('Training stage 2 finished in ' + execute_time + 's, model saved in ' + save_path)
 
 train_neural_network(parameters)
