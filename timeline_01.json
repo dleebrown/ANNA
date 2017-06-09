@@ -1,0 +1,4989 @@
+{
+    "traceEvents": [
+        {
+            "ph": "M",
+            "args": {
+                "name": "Allocators"
+            },
+            "pid": 0,
+            "name": "process_name"
+        },
+        {
+            "ph": "M",
+            "args": {
+                "name": "/job:localhost/replica:0/task:0/cpu:0 Compute"
+            },
+            "pid": 1,
+            "name": "process_name"
+        },
+        {
+            "ph": "M",
+            "args": {
+                "name": "/job:localhost/replica:0/task:0/cpu:0 Tensors"
+            },
+            "pid": 2,
+            "name": "process_name"
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "name": "_SOURCE",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793224680,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 22
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "INPUT_QUEUE/fifo_queue_DequeueMany/n",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224732,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 22
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "INPUT_QUEUE/Reshape/shape",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224755,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "INPUT_QUEUE/Reshape_1/shape",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224759,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 16
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "Flatten/Reshape/shape",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224777,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "FC1_LAYER/dropout/Shape",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224780,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Shape",
+            "args": {
+                "input0": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Shape_1",
+                "op": "Shape"
+            },
+            "pid": 1,
+            "ts": 1496956793224778,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "FC1_LAYER/dropout/random_uniform/min",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224785,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "FIFOQueueV2",
+            "args": {
+                "name": "INPUT_QUEUE/fifo_queue",
+                "op": "FIFOQueueV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224775,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 12
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "COST/mul/x",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224788,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 16
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/gradients/COST/mul_grad/Shape",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224805,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "CONV1_TENSORS/Variable_1",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224784,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 24
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Shape_1",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224809,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC1_TENSORS/Variable",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224785,
+            "cat": "Op",
+            "tid": 3,
+            "ph": "X",
+            "dur": 27
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC2_TENSORS/Variable",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224808,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "CONV1_TENSORS/Variable_1",
+                "name": "CONV1_TENSORS/Variable_1/read",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793224810,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/gradients/Flatten/Reshape_grad/Shape",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224812,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "FC1_TENSORS/Variable",
+                "name": "FC1_TENSORS/Variable/read",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793224814,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "FC1_TENSORS/Variable",
+            "pid": 1,
+            "ts": 1496956793224812,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "s",
+            "id": 0
+        },
+        {
+            "name": "FC1_TENSORS/Variable",
+            "pid": 1,
+            "ts": 1496956793224814,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 0
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Shape_1",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224816,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "FC2_TENSORS/Variable",
+                "name": "FC2_TENSORS/Variable/read",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793224814,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "CONV1_TENSORS/Variable",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224784,
+            "cat": "Op",
+            "tid": 4,
+            "ph": "X",
+            "dur": 33
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC2_TENSORS/Variable_1",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224816,
+            "cat": "Op",
+            "tid": 3,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/Shape_1",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224819,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC3_TENSORS/Variable",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224818,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "OPTIMIZE/beta1_power",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224820,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "FC2_TENSORS/Variable_1",
+                "name": "FC2_TENSORS/Variable_1/read",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793224820,
+            "cat": "Op",
+            "tid": 3,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "CONV1_TENSORS/Variable",
+                "name": "CONV1_TENSORS/Variable/read",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793224820,
+            "cat": "Op",
+            "tid": 4,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/Adam/beta1",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224822,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "FC3_TENSORS/Variable",
+                "name": "FC3_TENSORS/Variable/read",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793224822,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/beta1_power",
+                "name": "OPTIMIZE/beta1_power/read",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793224824,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/Adam/beta2",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224825,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "OPTIMIZE/beta2_power",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224825,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "CONV1_TENSORS/Variable/Adam_1",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224826,
+            "cat": "Op",
+            "tid": 3,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "CONV1_TENSORS/Variable/Adam",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224825,
+            "cat": "Op",
+            "tid": 4,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "CONV1_TENSORS/Variable_1/Adam",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224828,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/Adam/epsilon",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224828,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "CONV1_TENSORS/Variable_1/Adam_1",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224830,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/beta2_power",
+                "name": "OPTIMIZE/beta2_power/read",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793224829,
+            "cat": "Op",
+            "tid": 5,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "OPTIMIZE/beta2_power",
+            "pid": 1,
+            "ts": 1496956793224828,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 1
+        },
+        {
+            "name": "OPTIMIZE/beta2_power",
+            "pid": 1,
+            "ts": 1496956793224829,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "t",
+            "id": 1
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC1_TENSORS/Variable/Adam",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224831,
+            "cat": "Op",
+            "tid": 3,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC1_TENSORS/Variable/Adam_1",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224832,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC1_TENSORS/Variable_1/Adam",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224834,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "FC1_LAYER/dropout/random_uniform/sub/_6__cf__21",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224834,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC1_TENSORS/Variable_1/Adam_1",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224836,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/BroadcastGradientArgs/_8__cf__23",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224838,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC2_TENSORS/Variable/Adam_1",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224837,
+            "cat": "Op",
+            "tid": 3,
+            "ph": "X",
+            "dur": 5
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC2_TENSORS/Variable_1/Adam_1",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224841,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC2_TENSORS/Variable/Adam",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224836,
+            "cat": "Op",
+            "tid": 4,
+            "ph": "X",
+            "dur": 9
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC1_TENSORS/Variable_1",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224806,
+            "cat": "Op",
+            "tid": 6,
+            "ph": "X",
+            "dur": 39
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "FC1_TENSORS/Variable_1",
+                "name": "FC1_TENSORS/Variable_1/read",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793224851,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "FC1_TENSORS/Variable_1",
+            "pid": 1,
+            "ts": 1496956793224845,
+            "cat": "DataFlow",
+            "tid": 6,
+            "ph": "s",
+            "id": 2
+        },
+        {
+            "name": "FC1_TENSORS/Variable_1",
+            "pid": 1,
+            "ts": 1496956793224851,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 2
+        },
+        {
+            "name": "RandomUniform",
+            "args": {
+                "input0": "FC1_LAYER/dropout/Shape",
+                "name": "FC1_LAYER/dropout/random_uniform/RandomUniform",
+                "op": "RandomUniform"
+            },
+            "pid": 1,
+            "ts": 1496956793224846,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 15
+        },
+        {
+            "name": "FC1_LAYER/dropout/Shape",
+            "pid": 1,
+            "ts": 1496956793224782,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 3
+        },
+        {
+            "name": "FC1_LAYER/dropout/Shape",
+            "pid": 1,
+            "ts": 1496956793224846,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 3
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "COST/mul/x",
+                "input1": "OPTIMIZE/gradients/Fill",
+                "name": "OPTIMIZE/gradients/COST/mul_grad/mul_1",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793224856,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 6
+        },
+        {
+            "name": "RandomUniform",
+            "args": {
+                "input0": "FC2_LAYER/dropout/Shape",
+                "name": "FC2_LAYER/dropout/random_uniform/RandomUniform",
+                "op": "RandomUniform"
+            },
+            "pid": 1,
+            "ts": 1496956793224850,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 14
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "FC1_LAYER/dropout/random_uniform/RandomUniform",
+                "input1": "FC1_LAYER/dropout/random_uniform/sub",
+                "name": "FC1_LAYER/dropout/random_uniform/mul",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793224863,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 5
+        },
+        {
+            "name": "FC1_LAYER/dropout/random_uniform/RandomUniform",
+            "pid": 1,
+            "ts": 1496956793224861,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 4
+        },
+        {
+            "name": "FC1_LAYER/dropout/random_uniform/RandomUniform",
+            "pid": 1,
+            "ts": 1496956793224863,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 4
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "FC2_LAYER/dropout/random_uniform/RandomUniform",
+                "input1": "FC2_LAYER/dropout/random_uniform/sub",
+                "name": "FC2_LAYER/dropout/random_uniform/mul",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793224866,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "FC2_LAYER/dropout/random_uniform/RandomUniform",
+            "pid": 1,
+            "ts": 1496956793224864,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 5
+        },
+        {
+            "name": "FC2_LAYER/dropout/random_uniform/RandomUniform",
+            "pid": 1,
+            "ts": 1496956793224866,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 5
+        },
+        {
+            "name": "Add",
+            "args": {
+                "input0": "FC1_LAYER/dropout/random_uniform/mul",
+                "input1": "FC1_LAYER/dropout/random_uniform/min",
+                "name": "FC1_LAYER/dropout/random_uniform",
+                "op": "Add"
+            },
+            "pid": 1,
+            "ts": 1496956793224870,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "Add",
+            "args": {
+                "input0": "FC2_LAYER/dropout/random_uniform/mul",
+                "input1": "FC2_LAYER/dropout/random_uniform/min",
+                "name": "FC2_LAYER/dropout/random_uniform",
+                "op": "Add"
+            },
+            "pid": 1,
+            "ts": 1496956793224872,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Add",
+            "args": {
+                "input0": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "input1": "FC1_LAYER/dropout/random_uniform",
+                "name": "FC1_LAYER/dropout/add",
+                "op": "Add"
+            },
+            "pid": 1,
+            "ts": 1496956793224875,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 5
+        },
+        {
+            "name": "Add",
+            "args": {
+                "input0": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "input1": "FC2_LAYER/dropout/random_uniform",
+                "name": "FC2_LAYER/dropout/add",
+                "op": "Add"
+            },
+            "pid": 1,
+            "ts": 1496956793224876,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "Floor",
+            "args": {
+                "input0": "FC2_LAYER/dropout/add",
+                "name": "FC2_LAYER/dropout/Floor",
+                "op": "Floor"
+            },
+            "pid": 1,
+            "ts": 1496956793224882,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 6
+        },
+        {
+            "name": "FC2_LAYER/dropout/add",
+            "pid": 1,
+            "ts": 1496956793224880,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 6
+        },
+        {
+            "name": "FC2_LAYER/dropout/add",
+            "pid": 1,
+            "ts": 1496956793224882,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 6
+        },
+        {
+            "name": "Floor",
+            "args": {
+                "input0": "FC1_LAYER/dropout/add",
+                "name": "FC1_LAYER/dropout/Floor",
+                "op": "Floor"
+            },
+            "pid": 1,
+            "ts": 1496956793224881,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 8
+        },
+        {
+            "name": "FC1_LAYER/dropout/add",
+            "pid": 1,
+            "ts": 1496956793224880,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 7
+        },
+        {
+            "name": "FC1_LAYER/dropout/add",
+            "pid": 1,
+            "ts": 1496956793224881,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 7
+        },
+        {
+            "name": "Shape",
+            "args": {
+                "input0": "FC2_LAYER/dropout/Floor",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Shape_1",
+                "op": "Shape"
+            },
+            "pid": 1,
+            "ts": 1496956793224889,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Shape",
+            "args": {
+                "input0": "FC1_LAYER/dropout/Floor",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Shape_1",
+                "op": "Shape"
+            },
+            "pid": 1,
+            "ts": 1496956793224890,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC2_TENSORS/Variable_1/Adam",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224838,
+            "cat": "Op",
+            "tid": 5,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC3_TENSORS/Variable/Adam",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224844,
+            "cat": "Op",
+            "tid": 3,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "VariableV2",
+            "args": {
+                "name": "FC3_TENSORS/Variable/Adam_1",
+                "op": "VariableV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224845,
+            "cat": "Op",
+            "tid": 5,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "QueueDequeueManyV2",
+            "args": {
+                "input0": "INPUT_QUEUE/fifo_queue",
+                "input1": "INPUT_QUEUE/fifo_queue_DequeueMany/n",
+                "name": "INPUT_QUEUE/fifo_queue_DequeueMany",
+                "op": "QueueDequeueManyV2"
+            },
+            "pid": 1,
+            "ts": 1496956793224804,
+            "cat": "Op",
+            "tid": 7,
+            "ph": "X",
+            "dur": 202
+        },
+        {
+            "name": "INPUT_QUEUE/fifo_queue",
+            "pid": 1,
+            "ts": 1496956793224787,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 8
+        },
+        {
+            "name": "INPUT_QUEUE/fifo_queue",
+            "pid": 1,
+            "ts": 1496956793224804,
+            "cat": "DataFlow",
+            "tid": 7,
+            "ph": "t",
+            "id": 8
+        },
+        {
+            "name": "INPUT_QUEUE/fifo_queue_DequeueMany/n",
+            "pid": 1,
+            "ts": 1496956793224754,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 9
+        },
+        {
+            "name": "INPUT_QUEUE/fifo_queue_DequeueMany/n",
+            "pid": 1,
+            "ts": 1496956793224804,
+            "cat": "DataFlow",
+            "tid": 7,
+            "ph": "t",
+            "id": 9
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "INPUT_QUEUE/fifo_queue_DequeueMany",
+                "input1": "INPUT_QUEUE/Reshape_1/shape",
+                "name": "INPUT_QUEUE/Reshape_1",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793225014,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "INPUT_QUEUE/fifo_queue_DequeueMany",
+            "pid": 1,
+            "ts": 1496956793225006,
+            "cat": "DataFlow",
+            "tid": 7,
+            "ph": "s",
+            "id": 10
+        },
+        {
+            "name": "INPUT_QUEUE/fifo_queue_DequeueMany",
+            "pid": 1,
+            "ts": 1496956793225014,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 10
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "INPUT_QUEUE/fifo_queue_DequeueMany:1",
+                "input1": "INPUT_QUEUE/Reshape/shape",
+                "name": "INPUT_QUEUE/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793225018,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 1
+        },
+        {
+            "name": "INPUT_QUEUE/fifo_queue_DequeueMany:1",
+            "pid": 1,
+            "ts": 1496956793225006,
+            "cat": "DataFlow",
+            "tid": 7,
+            "ph": "s",
+            "id": 11
+        },
+        {
+            "name": "INPUT_QUEUE/fifo_queue_DequeueMany:1",
+            "pid": 1,
+            "ts": 1496956793225018,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 11
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/BroadcastGradientArgs/_11__cf__26",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793224843,
+            "cat": "Op",
+            "tid": 8,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Const",
+            "args": {
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/BroadcastGradientArgs/_12__cf__27",
+                "op": "Const"
+            },
+            "pid": 1,
+            "ts": 1496956793225071,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 16
+        },
+        {
+            "name": "BroadcastGradientArgs",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Shape",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/BroadcastGradientArgs",
+                "op": "BroadcastGradientArgs"
+            },
+            "pid": 1,
+            "ts": 1496956793225088,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 6
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Shape_1",
+            "pid": 1,
+            "ts": 1496956793224782,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 12
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Shape_1",
+            "pid": 1,
+            "ts": 1496956793225088,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 12
+        },
+        {
+            "name": "BroadcastGradientArgs",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/mul_grad/Shape",
+                "input1": "OPTIMIZE/gradients/COST/mul_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/COST/mul_grad/BroadcastGradientArgs",
+                "op": "BroadcastGradientArgs"
+            },
+            "pid": 1,
+            "ts": 1496956793225096,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/mul_grad/mul_1",
+                "input1": "OPTIMIZE/gradients/COST/mul_grad/BroadcastGradientArgs:1",
+                "name": "OPTIMIZE/gradients/COST/mul_grad/Sum_1",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793225101,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/mul_grad/Sum_1",
+                "input1": "OPTIMIZE/gradients/COST/mul_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/COST/mul_grad/Reshape_1",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793225107,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Conv2D",
+            "args": {
+                "input0": "INPUT_QUEUE/Reshape",
+                "input1": "CONV1_TENSORS/Variable/read",
+                "name": "CONV1_LAYER/Conv2D",
+                "op": "Conv2D"
+            },
+            "pid": 1,
+            "ts": 1496956793225021,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 6727
+        },
+        {
+            "name": "INPUT_QUEUE/Reshape",
+            "pid": 1,
+            "ts": 1496956793225019,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 13
+        },
+        {
+            "name": "INPUT_QUEUE/Reshape",
+            "pid": 1,
+            "ts": 1496956793225021,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 13
+        },
+        {
+            "name": "CONV1_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793224823,
+            "cat": "DataFlow",
+            "tid": 4,
+            "ph": "s",
+            "id": 14
+        },
+        {
+            "name": "CONV1_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793225021,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 14
+        },
+        {
+            "name": "Add",
+            "args": {
+                "input0": "CONV1_LAYER/Conv2D",
+                "input1": "CONV1_TENSORS/Variable_1/read",
+                "name": "CONV1_LAYER/add",
+                "op": "Add"
+            },
+            "pid": 1,
+            "ts": 1496956793231760,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 1037
+        },
+        {
+            "name": "CONV1_LAYER/Conv2D",
+            "pid": 1,
+            "ts": 1496956793231748,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 15
+        },
+        {
+            "name": "CONV1_LAYER/Conv2D",
+            "pid": 1,
+            "ts": 1496956793231760,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 15
+        },
+        {
+            "name": "CONV1_TENSORS/Variable_1/read",
+            "pid": 1,
+            "ts": 1496956793224813,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 16
+        },
+        {
+            "name": "CONV1_TENSORS/Variable_1/read",
+            "pid": 1,
+            "ts": 1496956793231760,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 16
+        },
+        {
+            "name": "Relu",
+            "args": {
+                "input0": "CONV1_LAYER/add",
+                "name": "CONV1_LAYER/Relu",
+                "op": "Relu"
+            },
+            "pid": 1,
+            "ts": 1496956793232800,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 256
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "CONV1_LAYER/Relu",
+                "input1": "Flatten/Reshape/shape",
+                "name": "Flatten/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793233060,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "MatMul",
+            "args": {
+                "input0": "Flatten/Reshape",
+                "input1": "FC1_TENSORS/Variable/read",
+                "name": "FC1_LAYER/MatMul",
+                "op": "MatMul"
+            },
+            "pid": 1,
+            "ts": 1496956793233067,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2018
+        },
+        {
+            "name": "FC1_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793224816,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 17
+        },
+        {
+            "name": "FC1_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793233067,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 17
+        },
+        {
+            "name": "Add",
+            "args": {
+                "input0": "FC1_LAYER/MatMul",
+                "input1": "FC1_TENSORS/Variable_1/read",
+                "name": "FC1_LAYER/add",
+                "op": "Add"
+            },
+            "pid": 1,
+            "ts": 1496956793235088,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 11
+        },
+        {
+            "name": "Relu",
+            "args": {
+                "input0": "FC1_LAYER/add",
+                "name": "FC1_LAYER/Relu",
+                "op": "Relu"
+            },
+            "pid": 1,
+            "ts": 1496956793235101,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "Neg",
+            "args": {
+                "input0": "FC1_LAYER/Relu",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Neg",
+                "op": "Neg"
+            },
+            "pid": 1,
+            "ts": 1496956793235109,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "RealDiv",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Neg",
+                "input1": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/RealDiv_1",
+                "op": "RealDiv"
+            },
+            "pid": 1,
+            "ts": 1496956793235115,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 5
+        },
+        {
+            "name": "RealDiv",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/RealDiv_1",
+                "input1": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/RealDiv_2",
+                "op": "RealDiv"
+            },
+            "pid": 1,
+            "ts": 1496956793235122,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 18
+        },
+        {
+            "name": "RealDiv",
+            "args": {
+                "input0": "FC1_LAYER/Relu",
+                "input1": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "name": "FC1_LAYER/dropout/div",
+                "op": "RealDiv"
+            },
+            "pid": 1,
+            "ts": 1496956793235143,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "Shape",
+            "args": {
+                "input0": "FC1_LAYER/dropout/div",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Shape",
+                "op": "Shape"
+            },
+            "pid": 1,
+            "ts": 1496956793235151,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "BroadcastGradientArgs",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Shape",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/BroadcastGradientArgs",
+                "op": "BroadcastGradientArgs"
+            },
+            "pid": 1,
+            "ts": 1496956793235157,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 5
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Shape_1",
+            "pid": 1,
+            "ts": 1496956793224893,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 18
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Shape_1",
+            "pid": 1,
+            "ts": 1496956793235157,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 18
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "FC1_LAYER/dropout/div",
+                "input1": "FC1_LAYER/dropout/Floor",
+                "name": "FC1_LAYER/dropout/mul",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793235152,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 12
+        },
+        {
+            "name": "FC1_LAYER/dropout/div",
+            "pid": 1,
+            "ts": 1496956793235147,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 19
+        },
+        {
+            "name": "FC1_LAYER/dropout/div",
+            "pid": 1,
+            "ts": 1496956793235152,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 19
+        },
+        {
+            "name": "MatMul",
+            "args": {
+                "input0": "FC1_LAYER/dropout/mul",
+                "input1": "FC2_TENSORS/Variable/read",
+                "name": "FC2_LAYER/MatMul",
+                "op": "MatMul"
+            },
+            "pid": 1,
+            "ts": 1496956793235182,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 22
+        },
+        {
+            "name": "FC1_LAYER/dropout/mul",
+            "pid": 1,
+            "ts": 1496956793235164,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 20
+        },
+        {
+            "name": "FC1_LAYER/dropout/mul",
+            "pid": 1,
+            "ts": 1496956793235182,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 20
+        },
+        {
+            "name": "FC2_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793224817,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 21
+        },
+        {
+            "name": "FC2_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793235182,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 21
+        },
+        {
+            "name": "Add",
+            "args": {
+                "input0": "FC2_LAYER/MatMul",
+                "input1": "FC2_TENSORS/Variable_1/read",
+                "name": "FC2_LAYER/add",
+                "op": "Add"
+            },
+            "pid": 1,
+            "ts": 1496956793235205,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 21
+        },
+        {
+            "name": "FC2_TENSORS/Variable_1/read",
+            "pid": 1,
+            "ts": 1496956793224823,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "s",
+            "id": 22
+        },
+        {
+            "name": "FC2_TENSORS/Variable_1/read",
+            "pid": 1,
+            "ts": 1496956793235205,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 22
+        },
+        {
+            "name": "Relu",
+            "args": {
+                "input0": "FC2_LAYER/add",
+                "name": "FC2_LAYER/Relu",
+                "op": "Relu"
+            },
+            "pid": 1,
+            "ts": 1496956793235227,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Neg",
+            "args": {
+                "input0": "FC2_LAYER/Relu",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Neg",
+                "op": "Neg"
+            },
+            "pid": 1,
+            "ts": 1496956793235233,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "RealDiv",
+            "args": {
+                "input0": "FC2_LAYER/Relu",
+                "input1": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "name": "FC2_LAYER/dropout/div",
+                "op": "RealDiv"
+            },
+            "pid": 1,
+            "ts": 1496956793235232,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 5
+        },
+        {
+            "name": "FC2_LAYER/Relu",
+            "pid": 1,
+            "ts": 1496956793235230,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 23
+        },
+        {
+            "name": "FC2_LAYER/Relu",
+            "pid": 1,
+            "ts": 1496956793235232,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 23
+        },
+        {
+            "name": "RealDiv",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Neg",
+                "input1": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/RealDiv_1",
+                "op": "RealDiv"
+            },
+            "pid": 1,
+            "ts": 1496956793235237,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "RealDiv",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/RealDiv_1",
+                "input1": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/RealDiv_2",
+                "op": "RealDiv"
+            },
+            "pid": 1,
+            "ts": 1496956793235241,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Shape",
+            "args": {
+                "input0": "FC2_LAYER/dropout/div",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Shape",
+                "op": "Shape"
+            },
+            "pid": 1,
+            "ts": 1496956793235241,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "BroadcastGradientArgs",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Shape",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/BroadcastGradientArgs",
+                "op": "BroadcastGradientArgs"
+            },
+            "pid": 1,
+            "ts": 1496956793235245,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 19
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Shape",
+            "pid": 1,
+            "ts": 1496956793235244,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 24
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Shape",
+            "pid": 1,
+            "ts": 1496956793235245,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 24
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "FC2_LAYER/dropout/div",
+                "input1": "FC2_LAYER/dropout/Floor",
+                "name": "FC2_LAYER/dropout/mul",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793235245,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 19
+        },
+        {
+            "name": "FC2_LAYER/dropout/Floor",
+            "pid": 1,
+            "ts": 1496956793224888,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 25
+        },
+        {
+            "name": "FC2_LAYER/dropout/Floor",
+            "pid": 1,
+            "ts": 1496956793235245,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 25
+        },
+        {
+            "name": "MatMul",
+            "args": {
+                "input0": "FC2_LAYER/dropout/mul",
+                "input1": "FC3_TENSORS/Variable/read",
+                "name": "FC3_LAYER/MatMul",
+                "op": "MatMul"
+            },
+            "pid": 1,
+            "ts": 1496956793235266,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 20
+        },
+        {
+            "name": "FC2_LAYER/dropout/mul",
+            "pid": 1,
+            "ts": 1496956793235264,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 26
+        },
+        {
+            "name": "FC2_LAYER/dropout/mul",
+            "pid": 1,
+            "ts": 1496956793235266,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 26
+        },
+        {
+            "name": "FC3_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793224824,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 27
+        },
+        {
+            "name": "FC3_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793235266,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 27
+        },
+        {
+            "name": "Sub",
+            "args": {
+                "input0": "INPUT_QUEUE/Reshape_1",
+                "input1": "FC3_LAYER/MatMul",
+                "name": "COST/sub",
+                "op": "Sub"
+            },
+            "pid": 1,
+            "ts": 1496956793235287,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "L2Loss",
+            "args": {
+                "input0": "COST/sub",
+                "name": "COST/L2Loss",
+                "op": "L2Loss"
+            },
+            "pid": 1,
+            "ts": 1496956793235292,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "OPTIMIZE/gradients/Fill",
+                "input1": "COST/L2Loss",
+                "name": "OPTIMIZE/gradients/COST/mul_grad/mul",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793235309,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/mul_grad/mul",
+                "input1": "OPTIMIZE/gradients/COST/mul_grad/BroadcastGradientArgs",
+                "name": "OPTIMIZE/gradients/COST/mul_grad/Sum",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235313,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/mul_grad/Sum",
+                "input1": "OPTIMIZE/gradients/COST/mul_grad/Shape",
+                "name": "OPTIMIZE/gradients/COST/mul_grad/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235317,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 15
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/COST/mul_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/COST/mul_grad/Reshape_1",
+                "name": "OPTIMIZE/gradients/COST/mul_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793235333,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 1
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/mul_grad/Reshape_1",
+                "input1": "^OPTIMIZE/gradients/COST/mul_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/COST/mul_grad/tuple/control_dependency_1",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235335,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "COST/sub",
+                "input1": "OPTIMIZE/gradients/COST/mul_grad/tuple/control_dependency_1",
+                "name": "OPTIMIZE/gradients/COST/L2Loss_grad/mul",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793235338,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/L2Loss_grad/mul",
+                "input1": "OPTIMIZE/gradients/COST/sub_grad/BroadcastGradientArgs",
+                "name": "OPTIMIZE/gradients/COST/sub_grad/Sum",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235341,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/sub_grad/Sum",
+                "input1": "OPTIMIZE/gradients/COST/sub_grad/Shape",
+                "name": "OPTIMIZE/gradients/COST/sub_grad/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235345,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Neg",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/sub_grad/Sum_1",
+                "name": "OPTIMIZE/gradients/COST/sub_grad/Neg",
+                "op": "Neg"
+            },
+            "pid": 1,
+            "ts": 1496956793235349,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 5
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/sub_grad/Neg",
+                "input1": "OPTIMIZE/gradients/COST/sub_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/COST/sub_grad/Reshape_1",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235356,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/COST/sub_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/COST/sub_grad/Reshape_1",
+                "name": "OPTIMIZE/gradients/COST/sub_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793235360,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 1
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/sub_grad/Reshape_1",
+                "input1": "^OPTIMIZE/gradients/COST/sub_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/COST/sub_grad/tuple/control_dependency_1",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235363,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "MatMul",
+            "args": {
+                "input0": "OPTIMIZE/gradients/COST/sub_grad/tuple/control_dependency_1",
+                "input1": "FC3_TENSORS/Variable/read",
+                "name": "OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/MatMul",
+                "op": "MatMul"
+            },
+            "pid": 1,
+            "ts": 1496956793235368,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 5
+        },
+        {
+            "name": "FC3_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793224824,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 28
+        },
+        {
+            "name": "FC3_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793235368,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 28
+        },
+        {
+            "name": "MatMul",
+            "args": {
+                "input0": "FC2_LAYER/dropout/mul",
+                "input1": "OPTIMIZE/gradients/COST/sub_grad/tuple/control_dependency_1",
+                "name": "OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/MatMul_1",
+                "op": "MatMul"
+            },
+            "pid": 1,
+            "ts": 1496956793235367,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 11
+        },
+        {
+            "name": "OPTIMIZE/gradients/COST/sub_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "ts": 1496956793235365,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 29
+        },
+        {
+            "name": "OPTIMIZE/gradients/COST/sub_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "ts": 1496956793235367,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 29
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/MatMul",
+                "input1": "^OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/MatMul_1",
+                "name": "OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793235380,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/MatMul",
+                "input1": "^OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/tuple/control_dependency",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235384,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/tuple/control_dependency",
+                "input1": "FC2_LAYER/dropout/Floor",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/mul",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793235389,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/MatMul_1",
+                "input1": "^OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/tuple/control_dependency_1",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235391,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/mul",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/BroadcastGradientArgs",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Sum",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235393,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Sum",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Shape",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235396,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Shape",
+            "pid": 1,
+            "ts": 1496956793235244,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 30
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Shape",
+            "pid": 1,
+            "ts": 1496956793235396,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 30
+        },
+        {
+            "name": "ApplyAdam",
+            "args": {
+                "input2": "FC3_TENSORS/Variable/Adam_1",
+                "input3": "OPTIMIZE/beta1_power/read",
+                "input0": "FC3_TENSORS/Variable",
+                "input1": "FC3_TENSORS/Variable/Adam",
+                "input6": "OPTIMIZE/Adam/beta1",
+                "name": "OPTIMIZE/Adam/update_FC3_TENSORS/Variable/ApplyAdam",
+                "input4": "OPTIMIZE/beta2_power/read",
+                "input5": "_recv_NETWORK_HYPERPARAMS/Placeholder_2_0",
+                "input7": "OPTIMIZE/Adam/beta2",
+                "input8": "OPTIMIZE/Adam/epsilon",
+                "input9": "OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/tuple/control_dependency_1",
+                "op": "ApplyAdam"
+            },
+            "pid": 1,
+            "ts": 1496956793235395,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 25
+        },
+        {
+            "name": "FC3_TENSORS/Variable/Adam",
+            "pid": 1,
+            "ts": 1496956793224846,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "s",
+            "id": 31
+        },
+        {
+            "name": "FC3_TENSORS/Variable/Adam",
+            "pid": 1,
+            "ts": 1496956793235395,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 31
+        },
+        {
+            "name": "FC3_TENSORS/Variable/Adam_1",
+            "pid": 1,
+            "ts": 1496956793224848,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "s",
+            "id": 32
+        },
+        {
+            "name": "FC3_TENSORS/Variable/Adam_1",
+            "pid": 1,
+            "ts": 1496956793235395,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 32
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793224826,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 33
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793235395,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 33
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793224831,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "s",
+            "id": 34
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793235395,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 34
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta1",
+            "pid": 1,
+            "ts": 1496956793224824,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 35
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta1",
+            "pid": 1,
+            "ts": 1496956793235395,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 35
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta2",
+            "pid": 1,
+            "ts": 1496956793224827,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 36
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta2",
+            "pid": 1,
+            "ts": 1496956793235395,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 36
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793224832,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 37
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793235395,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 37
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "FC2_LAYER/dropout/div",
+                "input1": "OPTIMIZE/gradients/FC3_LAYER/MatMul_grad/tuple/control_dependency",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/mul_1",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793235419,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "FC2_LAYER/dropout/div",
+            "pid": 1,
+            "ts": 1496956793235237,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 38
+        },
+        {
+            "name": "FC2_LAYER/dropout/div",
+            "pid": 1,
+            "ts": 1496956793235419,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 38
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/mul_1",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/BroadcastGradientArgs:1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Sum_1",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235424,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 1
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Sum_1",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Reshape_1",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235427,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 17
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Reshape_1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793235445,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 1
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/tuple/control_dependency",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235447,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/tuple/control_dependency",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/RealDiv_2",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/mul",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793235466,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "RealDiv",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/tuple/control_dependency",
+                "input1": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/RealDiv",
+                "op": "RealDiv"
+            },
+            "pid": 1,
+            "ts": 1496956793235465,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 23
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235449,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 39
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/mul_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235465,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 39
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/mul",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/BroadcastGradientArgs:1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Sum_1",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235470,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 20
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/RealDiv",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/BroadcastGradientArgs",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Sum",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235494,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/RealDiv",
+            "pid": 1,
+            "ts": 1496956793235488,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 40
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/RealDiv",
+            "pid": 1,
+            "ts": 1496956793235494,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 40
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Sum",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Shape",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235500,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Sum_1",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Reshape_1",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235499,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 5
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Sum_1",
+            "pid": 1,
+            "ts": 1496956793235490,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 41
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Sum_1",
+            "pid": 1,
+            "ts": 1496956793235499,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 41
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Reshape_1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793235507,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 1
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/tuple/control_dependency",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235510,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "ReluGrad",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/dropout/div_grad/tuple/control_dependency",
+                "input1": "FC2_LAYER/Relu",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/Relu_grad/ReluGrad",
+                "op": "ReluGrad"
+            },
+            "pid": 1,
+            "ts": 1496956793235528,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 21
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/Relu_grad/ReluGrad",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/add_grad/BroadcastGradientArgs",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Sum",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235552,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Sum",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Shape",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235557,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/Relu_grad/ReluGrad",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/add_grad/BroadcastGradientArgs:1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Sum_1",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235554,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 7
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/Relu_grad/ReluGrad",
+            "pid": 1,
+            "ts": 1496956793235549,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 42
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/Relu_grad/ReluGrad",
+            "pid": 1,
+            "ts": 1496956793235554,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 42
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Sum_1",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Reshape_1",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235562,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Sum_1",
+            "pid": 1,
+            "ts": 1496956793235561,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 43
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Sum_1",
+            "pid": 1,
+            "ts": 1496956793235562,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 43
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/FC2_LAYER/add_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC2_LAYER/add_grad/Reshape_1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793235566,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/control_dependency",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235570,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/add_grad/Reshape_1",
+                "input1": "^OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/control_dependency_1",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235576,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "MatMul",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/control_dependency",
+                "input1": "FC2_TENSORS/Variable/read",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/MatMul",
+                "op": "MatMul"
+            },
+            "pid": 1,
+            "ts": 1496956793235574,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 30
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235572,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 44
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235574,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 44
+        },
+        {
+            "name": "FC2_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793224817,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 45
+        },
+        {
+            "name": "FC2_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793235574,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 45
+        },
+        {
+            "name": "ApplyAdam",
+            "args": {
+                "input2": "FC2_TENSORS/Variable_1/Adam_1",
+                "input3": "OPTIMIZE/beta1_power/read",
+                "input0": "FC2_TENSORS/Variable_1",
+                "input1": "FC2_TENSORS/Variable_1/Adam",
+                "input6": "OPTIMIZE/Adam/beta1",
+                "name": "OPTIMIZE/Adam/update_FC2_TENSORS/Variable_1/ApplyAdam",
+                "input4": "OPTIMIZE/beta2_power/read",
+                "input5": "_recv_NETWORK_HYPERPARAMS/Placeholder_2_0",
+                "input7": "OPTIMIZE/Adam/beta2",
+                "input8": "OPTIMIZE/Adam/epsilon",
+                "input9": "OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/control_dependency_1",
+                "op": "ApplyAdam"
+            },
+            "pid": 1,
+            "ts": 1496956793235581,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 24
+        },
+        {
+            "name": "FC2_TENSORS/Variable_1",
+            "pid": 1,
+            "ts": 1496956793224819,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "s",
+            "id": 46
+        },
+        {
+            "name": "FC2_TENSORS/Variable_1",
+            "pid": 1,
+            "ts": 1496956793235581,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 46
+        },
+        {
+            "name": "FC2_TENSORS/Variable_1/Adam",
+            "pid": 1,
+            "ts": 1496956793224841,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "s",
+            "id": 47
+        },
+        {
+            "name": "FC2_TENSORS/Variable_1/Adam",
+            "pid": 1,
+            "ts": 1496956793235581,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 47
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793224826,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 48
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793235581,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 48
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793224831,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "s",
+            "id": 49
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793235581,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 49
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793224832,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 50
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793235581,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 50
+        },
+        {
+            "name": "MatMul",
+            "args": {
+                "input0": "FC1_LAYER/dropout/mul",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/control_dependency",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/MatMul_1",
+                "op": "MatMul"
+            },
+            "pid": 1,
+            "ts": 1496956793235578,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 33
+        },
+        {
+            "name": "FC1_LAYER/dropout/mul",
+            "pid": 1,
+            "ts": 1496956793235164,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 51
+        },
+        {
+            "name": "FC1_LAYER/dropout/mul",
+            "pid": 1,
+            "ts": 1496956793235578,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "t",
+            "id": 51
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235572,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 52
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/add_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235578,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "t",
+            "id": 52
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/MatMul",
+                "input1": "^OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/MatMul_1",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793235613,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 15
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/MatMul",
+                "input1": "^OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235630,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/MatMul",
+            "pid": 1,
+            "ts": 1496956793235604,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 53
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/MatMul",
+            "pid": 1,
+            "ts": 1496956793235630,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 53
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/MatMul_1",
+                "input1": "^OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency_1",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235637,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 17
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/MatMul_1",
+            "pid": 1,
+            "ts": 1496956793235611,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 54
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/MatMul_1",
+            "pid": 1,
+            "ts": 1496956793235637,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 54
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency",
+                "input1": "FC1_LAYER/dropout/Floor",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/mul",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793235653,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235632,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 55
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235653,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 55
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/mul",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/BroadcastGradientArgs",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Sum",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235659,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/mul",
+            "pid": 1,
+            "ts": 1496956793235657,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 56
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/mul",
+            "pid": 1,
+            "ts": 1496956793235659,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 56
+        },
+        {
+            "name": "ApplyAdam",
+            "args": {
+                "input2": "FC2_TENSORS/Variable/Adam_1",
+                "input3": "OPTIMIZE/beta1_power/read",
+                "input0": "FC2_TENSORS/Variable",
+                "input1": "FC2_TENSORS/Variable/Adam",
+                "input6": "OPTIMIZE/Adam/beta1",
+                "name": "OPTIMIZE/Adam/update_FC2_TENSORS/Variable/ApplyAdam",
+                "input4": "OPTIMIZE/beta2_power/read",
+                "input5": "_recv_NETWORK_HYPERPARAMS/Placeholder_2_0",
+                "input7": "OPTIMIZE/Adam/beta2",
+                "input8": "OPTIMIZE/Adam/epsilon",
+                "input9": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency_1",
+                "op": "ApplyAdam"
+            },
+            "pid": 1,
+            "ts": 1496956793235656,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 6
+        },
+        {
+            "name": "FC2_TENSORS/Variable/Adam",
+            "pid": 1,
+            "ts": 1496956793224845,
+            "cat": "DataFlow",
+            "tid": 4,
+            "ph": "s",
+            "id": 57
+        },
+        {
+            "name": "FC2_TENSORS/Variable/Adam",
+            "pid": 1,
+            "ts": 1496956793235656,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "t",
+            "id": 57
+        },
+        {
+            "name": "FC2_TENSORS/Variable/Adam_1",
+            "pid": 1,
+            "ts": 1496956793224842,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "s",
+            "id": 58
+        },
+        {
+            "name": "FC2_TENSORS/Variable/Adam_1",
+            "pid": 1,
+            "ts": 1496956793235656,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "t",
+            "id": 58
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793224831,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "s",
+            "id": 59
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793235656,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "t",
+            "id": 59
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta1",
+            "pid": 1,
+            "ts": 1496956793224824,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 60
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta1",
+            "pid": 1,
+            "ts": 1496956793235656,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "t",
+            "id": 60
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta2",
+            "pid": 1,
+            "ts": 1496956793224827,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 61
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta2",
+            "pid": 1,
+            "ts": 1496956793235656,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "t",
+            "id": 61
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "ts": 1496956793235654,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 62
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "ts": 1496956793235656,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "t",
+            "id": 62
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Sum",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Shape",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235663,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "FC1_LAYER/dropout/div",
+                "input1": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/mul_1",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793235656,
+            "cat": "Op",
+            "tid": 3,
+            "ph": "X",
+            "dur": 9
+        },
+        {
+            "name": "FC1_LAYER/dropout/div",
+            "pid": 1,
+            "ts": 1496956793235147,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 63
+        },
+        {
+            "name": "FC1_LAYER/dropout/div",
+            "pid": 1,
+            "ts": 1496956793235656,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "t",
+            "id": 63
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235632,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 64
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC2_LAYER/MatMul_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235656,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "t",
+            "id": 64
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/mul_1",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/BroadcastGradientArgs:1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Sum_1",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235668,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 16
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/mul_1",
+            "pid": 1,
+            "ts": 1496956793235665,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "s",
+            "id": 65
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/mul_1",
+            "pid": 1,
+            "ts": 1496956793235668,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 65
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Sum_1",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Reshape_1",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235686,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Shape_1",
+            "pid": 1,
+            "ts": 1496956793224893,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 66
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Shape_1",
+            "pid": 1,
+            "ts": 1496956793235686,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 66
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Reshape_1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793235691,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 15
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/tuple/control_dependency",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235707,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/tuple/control_dependency",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/RealDiv_2",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/mul",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793235713,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "RealDiv",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/tuple/control_dependency",
+                "input1": "_recv_NETWORK_HYPERPARAMS/Placeholder_3_0",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/RealDiv",
+                "op": "RealDiv"
+            },
+            "pid": 1,
+            "ts": 1496956793235712,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 7
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235710,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 67
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/mul_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235712,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 67
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/mul",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/BroadcastGradientArgs:1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Sum_1",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235718,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 19
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/RealDiv",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/BroadcastGradientArgs",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Sum",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235722,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 17
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Sum_1",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Reshape_1",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235738,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Sum",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Shape",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235741,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Sum",
+            "pid": 1,
+            "ts": 1496956793235739,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 68
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Sum",
+            "pid": 1,
+            "ts": 1496956793235741,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 68
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Reshape_1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793235746,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 1
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/tuple/control_dependency",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235749,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "ReluGrad",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/dropout/div_grad/tuple/control_dependency",
+                "input1": "FC1_LAYER/Relu",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/Relu_grad/ReluGrad",
+                "op": "ReluGrad"
+            },
+            "pid": 1,
+            "ts": 1496956793235753,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 6
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/Relu_grad/ReluGrad",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/add_grad/BroadcastGradientArgs",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Sum",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235764,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Sum",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Shape",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235768,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/Relu_grad/ReluGrad",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/add_grad/BroadcastGradientArgs:1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Sum_1",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793235763,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 7
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/Relu_grad/ReluGrad",
+            "pid": 1,
+            "ts": 1496956793235759,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 69
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/Relu_grad/ReluGrad",
+            "pid": 1,
+            "ts": 1496956793235763,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 69
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Sum_1",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Reshape_1",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793235772,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Sum_1",
+            "pid": 1,
+            "ts": 1496956793235770,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 70
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Sum_1",
+            "pid": 1,
+            "ts": 1496956793235772,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 70
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/FC1_LAYER/add_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC1_LAYER/add_grad/Reshape_1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793235776,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 1
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/control_dependency",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235779,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/add_grad/Reshape_1",
+                "input1": "^OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/control_dependency_1",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793235786,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "ApplyAdam",
+            "args": {
+                "input2": "FC1_TENSORS/Variable_1/Adam_1",
+                "input3": "OPTIMIZE/beta1_power/read",
+                "input0": "FC1_TENSORS/Variable_1",
+                "input1": "FC1_TENSORS/Variable_1/Adam",
+                "input6": "OPTIMIZE/Adam/beta1",
+                "name": "OPTIMIZE/Adam/update_FC1_TENSORS/Variable_1/ApplyAdam",
+                "input4": "OPTIMIZE/beta2_power/read",
+                "input5": "_recv_NETWORK_HYPERPARAMS/Placeholder_2_0",
+                "input7": "OPTIMIZE/Adam/beta2",
+                "input8": "OPTIMIZE/Adam/epsilon",
+                "input9": "OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/control_dependency_1",
+                "op": "ApplyAdam"
+            },
+            "pid": 1,
+            "ts": 1496956793235791,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 18
+        },
+        {
+            "name": "FC1_TENSORS/Variable_1",
+            "pid": 1,
+            "ts": 1496956793224845,
+            "cat": "DataFlow",
+            "tid": 6,
+            "ph": "s",
+            "id": 71
+        },
+        {
+            "name": "FC1_TENSORS/Variable_1",
+            "pid": 1,
+            "ts": 1496956793235791,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 71
+        },
+        {
+            "name": "FC1_TENSORS/Variable_1/Adam",
+            "pid": 1,
+            "ts": 1496956793224837,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 72
+        },
+        {
+            "name": "FC1_TENSORS/Variable_1/Adam",
+            "pid": 1,
+            "ts": 1496956793235791,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 72
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793224826,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 73
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793235791,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 73
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793224831,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "s",
+            "id": 74
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793235791,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 74
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793224832,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 75
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793235791,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 75
+        },
+        {
+            "name": "MatMul",
+            "args": {
+                "input0": "Flatten/Reshape",
+                "input1": "OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/control_dependency",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/MatMul_1",
+                "op": "MatMul"
+            },
+            "pid": 1,
+            "ts": 1496956793235789,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 1605
+        },
+        {
+            "name": "Flatten/Reshape",
+            "pid": 1,
+            "ts": 1496956793233064,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 76
+        },
+        {
+            "name": "Flatten/Reshape",
+            "pid": 1,
+            "ts": 1496956793235789,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 76
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235782,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 77
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235789,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 77
+        },
+        {
+            "name": "MatMul",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/control_dependency",
+                "input1": "FC1_TENSORS/Variable/read",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/MatMul",
+                "op": "MatMul"
+            },
+            "pid": 1,
+            "ts": 1496956793235784,
+            "cat": "Op",
+            "tid": 2,
+            "ph": "X",
+            "dur": 1745
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235782,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 78
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/add_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793235784,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "t",
+            "id": 78
+        },
+        {
+            "name": "FC1_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793224816,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 79
+        },
+        {
+            "name": "FC1_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793235784,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "t",
+            "id": 79
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/MatMul",
+                "input1": "^OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/MatMul_1",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793237533,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/MatMul",
+                "input1": "^OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/tuple/control_dependency",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793237537,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/MatMul",
+            "pid": 1,
+            "ts": 1496956793237529,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 80
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/MatMul",
+            "pid": 1,
+            "ts": 1496956793237537,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 80
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/MatMul_1",
+                "input1": "^OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/tuple/control_dependency_1",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793237553,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/MatMul_1",
+            "pid": 1,
+            "ts": 1496956793237394,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 81
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/MatMul_1",
+            "pid": 1,
+            "ts": 1496956793237553,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 81
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/tuple/control_dependency",
+                "input1": "OPTIMIZE/gradients/Flatten/Reshape_grad/Shape",
+                "name": "OPTIMIZE/gradients/Flatten/Reshape_grad/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793237559,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 4
+        },
+        {
+            "name": "ApplyAdam",
+            "args": {
+                "input2": "FC1_TENSORS/Variable/Adam_1",
+                "input3": "OPTIMIZE/beta1_power/read",
+                "input0": "FC1_TENSORS/Variable",
+                "input1": "FC1_TENSORS/Variable/Adam",
+                "input6": "OPTIMIZE/Adam/beta1",
+                "name": "OPTIMIZE/Adam/update_FC1_TENSORS/Variable/ApplyAdam",
+                "input4": "OPTIMIZE/beta2_power/read",
+                "input5": "_recv_NETWORK_HYPERPARAMS/Placeholder_2_0",
+                "input7": "OPTIMIZE/Adam/beta2",
+                "input8": "OPTIMIZE/Adam/epsilon",
+                "input9": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/tuple/control_dependency_1",
+                "op": "ApplyAdam"
+            },
+            "pid": 1,
+            "ts": 1496956793237562,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 614
+        },
+        {
+            "name": "FC1_TENSORS/Variable",
+            "pid": 1,
+            "ts": 1496956793224812,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "s",
+            "id": 82
+        },
+        {
+            "name": "FC1_TENSORS/Variable",
+            "pid": 1,
+            "ts": 1496956793237562,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 82
+        },
+        {
+            "name": "FC1_TENSORS/Variable/Adam",
+            "pid": 1,
+            "ts": 1496956793224835,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "s",
+            "id": 83
+        },
+        {
+            "name": "FC1_TENSORS/Variable/Adam",
+            "pid": 1,
+            "ts": 1496956793237562,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 83
+        },
+        {
+            "name": "FC1_TENSORS/Variable/Adam_1",
+            "pid": 1,
+            "ts": 1496956793224835,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 84
+        },
+        {
+            "name": "FC1_TENSORS/Variable/Adam_1",
+            "pid": 1,
+            "ts": 1496956793237562,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 84
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793224826,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 85
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793237562,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 85
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793224831,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "s",
+            "id": 86
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793237562,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 86
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta1",
+            "pid": 1,
+            "ts": 1496956793224824,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 87
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta1",
+            "pid": 1,
+            "ts": 1496956793237562,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 87
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta2",
+            "pid": 1,
+            "ts": 1496956793224827,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 88
+        },
+        {
+            "name": "OPTIMIZE/Adam/beta2",
+            "pid": 1,
+            "ts": 1496956793237562,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 88
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793224832,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 89
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793237562,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 89
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "ts": 1496956793237556,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 90
+        },
+        {
+            "name": "OPTIMIZE/gradients/FC1_LAYER/MatMul_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "ts": 1496956793237562,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 90
+        },
+        {
+            "name": "ReluGrad",
+            "args": {
+                "input0": "OPTIMIZE/gradients/Flatten/Reshape_grad/Reshape",
+                "input1": "CONV1_LAYER/Relu",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/Relu_grad/ReluGrad",
+                "op": "ReluGrad"
+            },
+            "pid": 1,
+            "ts": 1496956793237565,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 851
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/CONV1_LAYER/Relu_grad/ReluGrad",
+                "input1": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/BroadcastGradientArgs",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Sum",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793238422,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 5
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Sum",
+                "input1": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Shape",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Reshape",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793238430,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "Sum",
+            "args": {
+                "input0": "OPTIMIZE/gradients/CONV1_LAYER/Relu_grad/ReluGrad",
+                "input1": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/BroadcastGradientArgs:1",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Sum_1",
+                "op": "Sum"
+            },
+            "pid": 1,
+            "ts": 1496956793238420,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 378
+        },
+        {
+            "name": "OPTIMIZE/gradients/CONV1_LAYER/Relu_grad/ReluGrad",
+            "pid": 1,
+            "ts": 1496956793238416,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 91
+        },
+        {
+            "name": "OPTIMIZE/gradients/CONV1_LAYER/Relu_grad/ReluGrad",
+            "pid": 1,
+            "ts": 1496956793238420,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 91
+        },
+        {
+            "name": "Reshape",
+            "args": {
+                "input0": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Sum_1",
+                "input1": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Reshape_1",
+                "op": "Reshape"
+            },
+            "pid": 1,
+            "ts": 1496956793238800,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Sum_1",
+            "pid": 1,
+            "ts": 1496956793238798,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 92
+        },
+        {
+            "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Sum_1",
+            "pid": 1,
+            "ts": 1496956793238800,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 92
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/CONV1_LAYER/add_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/CONV1_LAYER/add_grad/Reshape_1",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793238804,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Reshape",
+                "input1": "^OPTIMIZE/gradients/CONV1_LAYER/add_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/tuple/control_dependency",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793238808,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/Reshape_1",
+                "input1": "^OPTIMIZE/gradients/CONV1_LAYER/add_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/tuple/control_dependency_1",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793238815,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "ApplyAdam",
+            "args": {
+                "input2": "CONV1_TENSORS/Variable_1/Adam_1",
+                "input3": "OPTIMIZE/beta1_power/read",
+                "input0": "CONV1_TENSORS/Variable_1",
+                "input1": "CONV1_TENSORS/Variable_1/Adam",
+                "input6": "OPTIMIZE/Adam/beta1",
+                "name": "OPTIMIZE/Adam/update_CONV1_TENSORS/Variable_1/ApplyAdam",
+                "input4": "OPTIMIZE/beta2_power/read",
+                "input5": "_recv_NETWORK_HYPERPARAMS/Placeholder_2_0",
+                "input7": "OPTIMIZE/Adam/beta2",
+                "input8": "OPTIMIZE/Adam/epsilon",
+                "input9": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/tuple/control_dependency_1",
+                "op": "ApplyAdam"
+            },
+            "pid": 1,
+            "ts": 1496956793238819,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 7
+        },
+        {
+            "name": "CONV1_TENSORS/Variable_1",
+            "pid": 1,
+            "ts": 1496956793224808,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 93
+        },
+        {
+            "name": "CONV1_TENSORS/Variable_1",
+            "pid": 1,
+            "ts": 1496956793238819,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 93
+        },
+        {
+            "name": "CONV1_TENSORS/Variable_1/Adam_1",
+            "pid": 1,
+            "ts": 1496956793224833,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 94
+        },
+        {
+            "name": "CONV1_TENSORS/Variable_1/Adam_1",
+            "pid": 1,
+            "ts": 1496956793238819,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 94
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793224826,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 95
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793238819,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 95
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793224831,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "s",
+            "id": 96
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793238819,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 96
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793224832,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 97
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793238819,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 97
+        },
+        {
+            "name": "Conv2DBackpropInput",
+            "args": {
+                "input2": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/tuple/control_dependency",
+                "input0": "OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/Shape",
+                "input1": "CONV1_TENSORS/Variable/read",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/Conv2DBackpropInput",
+                "op": "Conv2DBackpropInput"
+            },
+            "pid": 1,
+            "ts": 1496956793238816,
+            "cat": "Op",
+            "tid": 1,
+            "ph": "X",
+            "dur": 8417
+        },
+        {
+            "name": "CONV1_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793224823,
+            "cat": "DataFlow",
+            "tid": 4,
+            "ph": "s",
+            "id": 98
+        },
+        {
+            "name": "CONV1_TENSORS/Variable/read",
+            "pid": 1,
+            "ts": 1496956793238816,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 98
+        },
+        {
+            "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793238810,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "s",
+            "id": 99
+        },
+        {
+            "name": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/tuple/control_dependency",
+            "pid": 1,
+            "ts": 1496956793238816,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "t",
+            "id": 99
+        },
+        {
+            "name": "Conv2DBackpropFilter",
+            "args": {
+                "input2": "OPTIMIZE/gradients/CONV1_LAYER/add_grad/tuple/control_dependency",
+                "input0": "INPUT_QUEUE/Reshape",
+                "input1": "OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/Shape_1",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/Conv2DBackpropFilter",
+                "op": "Conv2DBackpropFilter"
+            },
+            "pid": 1,
+            "ts": 1496956793238845,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 19481
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input0": "^OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/Conv2DBackpropInput",
+                "input1": "^OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/Conv2DBackpropFilter",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/tuple/group_deps",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793258335,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "Identity",
+            "args": {
+                "input0": "OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/Conv2DBackpropFilter",
+                "input1": "^OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/tuple/group_deps",
+                "name": "OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/tuple/control_dependency_1",
+                "op": "Identity"
+            },
+            "pid": 1,
+            "ts": 1496956793258339,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "ApplyAdam",
+            "args": {
+                "input2": "CONV1_TENSORS/Variable/Adam_1",
+                "input3": "OPTIMIZE/beta1_power/read",
+                "input0": "CONV1_TENSORS/Variable",
+                "input1": "CONV1_TENSORS/Variable/Adam",
+                "input6": "OPTIMIZE/Adam/beta1",
+                "name": "OPTIMIZE/Adam/update_CONV1_TENSORS/Variable/ApplyAdam",
+                "input4": "OPTIMIZE/beta2_power/read",
+                "input5": "_recv_NETWORK_HYPERPARAMS/Placeholder_2_0",
+                "input7": "OPTIMIZE/Adam/beta2",
+                "input8": "OPTIMIZE/Adam/epsilon",
+                "input9": "OPTIMIZE/gradients/CONV1_LAYER/Conv2D_grad/tuple/control_dependency_1",
+                "op": "ApplyAdam"
+            },
+            "pid": 1,
+            "ts": 1496956793258343,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 10
+        },
+        {
+            "name": "CONV1_TENSORS/Variable",
+            "pid": 1,
+            "ts": 1496956793224817,
+            "cat": "DataFlow",
+            "tid": 4,
+            "ph": "s",
+            "id": 100
+        },
+        {
+            "name": "CONV1_TENSORS/Variable",
+            "pid": 1,
+            "ts": 1496956793258343,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 100
+        },
+        {
+            "name": "CONV1_TENSORS/Variable/Adam",
+            "pid": 1,
+            "ts": 1496956793224829,
+            "cat": "DataFlow",
+            "tid": 4,
+            "ph": "s",
+            "id": 101
+        },
+        {
+            "name": "CONV1_TENSORS/Variable/Adam",
+            "pid": 1,
+            "ts": 1496956793258343,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 101
+        },
+        {
+            "name": "CONV1_TENSORS/Variable/Adam_1",
+            "pid": 1,
+            "ts": 1496956793224829,
+            "cat": "DataFlow",
+            "tid": 3,
+            "ph": "s",
+            "id": 102
+        },
+        {
+            "name": "CONV1_TENSORS/Variable/Adam_1",
+            "pid": 1,
+            "ts": 1496956793258343,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 102
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793224826,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 103
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793258343,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 103
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793224831,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "s",
+            "id": 104
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793258343,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 104
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793224832,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 105
+        },
+        {
+            "name": "OPTIMIZE/Adam/epsilon",
+            "pid": 1,
+            "ts": 1496956793258343,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 105
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input2": "^OPTIMIZE/Adam/update_CONV1_TENSORS/Variable/ApplyAdam",
+                "input3": "^OPTIMIZE/Adam/update_CONV1_TENSORS/Variable_1/ApplyAdam",
+                "input0": "OPTIMIZE/beta2_power/read",
+                "input1": "OPTIMIZE/Adam/beta2",
+                "input6": "^OPTIMIZE/Adam/update_FC2_TENSORS/Variable/ApplyAdam",
+                "name": "OPTIMIZE/Adam/mul_1",
+                "input4": "^OPTIMIZE/Adam/update_FC1_TENSORS/Variable/ApplyAdam",
+                "input5": "^OPTIMIZE/Adam/update_FC1_TENSORS/Variable_1/ApplyAdam",
+                "input7": "^OPTIMIZE/Adam/update_FC2_TENSORS/Variable_1/ApplyAdam",
+                "input8": "^OPTIMIZE/Adam/update_FC3_TENSORS/Variable/ApplyAdam",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793258359,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 6
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793224831,
+            "cat": "DataFlow",
+            "tid": 5,
+            "ph": "s",
+            "id": 106
+        },
+        {
+            "name": "OPTIMIZE/beta2_power/read",
+            "pid": 1,
+            "ts": 1496956793258359,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 106
+        },
+        {
+            "name": "Assign",
+            "args": {
+                "input0": "OPTIMIZE/beta2_power",
+                "input1": "OPTIMIZE/Adam/mul_1",
+                "name": "OPTIMIZE/Adam/Assign_1",
+                "op": "Assign"
+            },
+            "pid": 1,
+            "ts": 1496956793258368,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        },
+        {
+            "name": "OPTIMIZE/beta2_power",
+            "pid": 1,
+            "ts": 1496956793224828,
+            "cat": "DataFlow",
+            "tid": 1,
+            "ph": "s",
+            "id": 107
+        },
+        {
+            "name": "OPTIMIZE/beta2_power",
+            "pid": 1,
+            "ts": 1496956793258368,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 107
+        },
+        {
+            "name": "Mul",
+            "args": {
+                "input2": "^OPTIMIZE/Adam/update_CONV1_TENSORS/Variable/ApplyAdam",
+                "input3": "^OPTIMIZE/Adam/update_CONV1_TENSORS/Variable_1/ApplyAdam",
+                "input0": "OPTIMIZE/beta1_power/read",
+                "input1": "OPTIMIZE/Adam/beta1",
+                "input6": "^OPTIMIZE/Adam/update_FC2_TENSORS/Variable/ApplyAdam",
+                "name": "OPTIMIZE/Adam/mul",
+                "input4": "^OPTIMIZE/Adam/update_FC1_TENSORS/Variable/ApplyAdam",
+                "input5": "^OPTIMIZE/Adam/update_FC1_TENSORS/Variable_1/ApplyAdam",
+                "input7": "^OPTIMIZE/Adam/update_FC2_TENSORS/Variable_1/ApplyAdam",
+                "input8": "^OPTIMIZE/Adam/update_FC3_TENSORS/Variable/ApplyAdam",
+                "op": "Mul"
+            },
+            "pid": 1,
+            "ts": 1496956793258373,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 17
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793224826,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 108
+        },
+        {
+            "name": "OPTIMIZE/beta1_power/read",
+            "pid": 1,
+            "ts": 1496956793258373,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 108
+        },
+        {
+            "name": "Assign",
+            "args": {
+                "input0": "OPTIMIZE/beta1_power",
+                "input1": "OPTIMIZE/Adam/mul",
+                "name": "OPTIMIZE/Adam/Assign",
+                "op": "Assign"
+            },
+            "pid": 1,
+            "ts": 1496956793258392,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 2
+        },
+        {
+            "name": "OPTIMIZE/beta1_power",
+            "pid": 1,
+            "ts": 1496956793224823,
+            "cat": "DataFlow",
+            "tid": 2,
+            "ph": "s",
+            "id": 109
+        },
+        {
+            "name": "OPTIMIZE/beta1_power",
+            "pid": 1,
+            "ts": 1496956793258392,
+            "cat": "DataFlow",
+            "tid": 0,
+            "ph": "t",
+            "id": 109
+        },
+        {
+            "name": "NoOp",
+            "args": {
+                "input2": "^OPTIMIZE/Adam/update_FC1_TENSORS/Variable/ApplyAdam",
+                "input3": "^OPTIMIZE/Adam/update_FC1_TENSORS/Variable_1/ApplyAdam",
+                "input0": "^OPTIMIZE/Adam/update_CONV1_TENSORS/Variable/ApplyAdam",
+                "input1": "^OPTIMIZE/Adam/update_CONV1_TENSORS/Variable_1/ApplyAdam",
+                "input6": "^OPTIMIZE/Adam/update_FC3_TENSORS/Variable/ApplyAdam",
+                "name": "OPTIMIZE/Adam",
+                "input4": "^OPTIMIZE/Adam/update_FC2_TENSORS/Variable/ApplyAdam",
+                "input5": "^OPTIMIZE/Adam/update_FC2_TENSORS/Variable_1/ApplyAdam",
+                "input7": "^OPTIMIZE/Adam/Assign",
+                "input8": "^OPTIMIZE/Adam/Assign_1",
+                "op": "NoOp"
+            },
+            "pid": 1,
+            "ts": 1496956793258396,
+            "cat": "Op",
+            "tid": 0,
+            "ph": "X",
+            "dur": 3
+        }
+    ]
+}

@@ -193,10 +193,11 @@ with tf.name_scope('NETWORK_HYPERPARAMS'):
     image_data = tf.placeholder(tf.float32, shape=[None, num_px])
     learning_rate = tf.placeholder(tf.float32)
     dropout = tf.placeholder(tf.float32)
+    pp_depth = int(parameters['MAX_PP_DEPTH'])
 
 # the input queue - handles building random batches and contains wrapper for preprocessing
 with tf.name_scope('INPUT_QUEUE'):
-    input_queue = tf.FIFOQueue(capacity=200000, dtypes=[tf.float32, tf.float32],
+    input_queue = tf.FIFOQueue(capacity=pp_depth, dtypes=[tf.float32, tf.float32],
                                             shapes=[[num_outputs], [num_px]])
     queue_operation = input_queue.enqueue_many([known_params, image_data])
     batch_outputs, batch_pixels = input_queue.dequeue_many(batch_size)
@@ -258,12 +259,27 @@ with tf.name_scope('FC3_TENSORS'):
 with tf.name_scope('FC3_LAYER'):
     fc_output = cv.layer_fc(input=fc2_dropout, weights=fc3_weight)
 
+
 # cost function for the network
 with tf.name_scope('COST'):
     cost = cv.network_cost(predicted_vals=fc_output, known_vals=outputs_shaped, type='l2')
+    tf.summary.scalar("COST", cost)
 
 with tf.name_scope('OPTIMIZE'):
     optimize = cv.network_optimize(cost, learn_rate=learning_rate, optimizer='adam')
+
+with tf.name_scope('VISUALS'):
+    tf.summary.histogram('CONV1_WEIGHTS', cl1_weight)
+    tf.summary.histogram('CONV1_BIASES', cl1_bias)
+    tf.summary.histogram('CONV1_ACTIVATIONS', cl1_activate)
+    tf.summary.histogram('FC1_WEIGHTS', fc1_weight)
+    tf.summary.histogram('FC1_BIASES', fc1_bias)
+    tf.summary.histogram('FC1_ACTIVATIONS', fc1_activate)
+    tf.summary.histogram('FC2_WEIGHTS', fc2_weight)
+    tf.summary.histogram('FC2_BIASES', fc2_bias)
+    tf.summary.histogram('FC2_ACTIVATIONS', fc2_activate)
+    tf.summary.histogram('FC3_WEIGHTS', fc3_weight)
+    tf.summary.histogram('FC3_ACTIVATIONS', fc_output)
 
 
 def train_neural_network(parameters):
@@ -273,15 +289,15 @@ def train_neural_network(parameters):
     y_off_range = np.fromstring(parameters['REL_CONT_E_TRAIN'], sep=', ', dtype=np.float32)
     sn_template_file = parameters['SN_TEMPLATE']
     fetch_size = int(parameters['NUM_FETCH'])
-    wavelengths, normed_outputs, pix_values = read_known_binary('allspec_test_200_600', parameters, minvals, maxvals)
+    wavelengths, normed_outputs, pix_values = read_known_binary(parameters['TRAINING_DATA'], parameters, minvals, maxvals)
     interp_sn = interpolate_sn(sn_template_file, wavelengths)
     # definition of the training loop in order to allow for multistage training
 
-    def train_loop(iterations, learn_rate, keep_prob):
+    def train_loop(iterations, learn_rate, keep_prob, inherit_iter_count):
         begin_time = time.time()
         coordinator = tf.train.Coordinator()
         with tf.device("/cpu:0"):
-            num_threads = 1
+            num_threads = int(parameters['PP_THREADS'])
             enqueue_threads = [threading.Thread(target=add_to_queue, args=(session, queue_operation, coordinator,
                                                                  normed_outputs, pix_values, sn_range, interp_sn,
                                                                  y_off_range, fetch_size)) for i in range(num_threads)]
@@ -289,19 +305,28 @@ def train_neural_network(parameters):
                 i.start()
         time.sleep(1)
         for i in range(iterations):
-            if (i+1) % 1000 == 0:  # prints a timeline object and current cost
-                session.run(optimize, options=options, run_metadata=run_metadata, feed_dict={learning_rate: learn_rate,
-                                                                                             dropout: keep_prob})
+            if (i+1) == iterations and parameters['TIMELINE_OUTPUT'] == 'YES':
+                # prints a timeline object and current cost for last iteration and writes to log
+                session.run(optimize, options=options, run_metadata=run_metadata,
+                            feed_dict={learning_rate: learn_rate, dropout: keep_prob})
                 # Create the Timeline object, and write it to a json file
                 fetched_timeline = timeline.Timeline(run_metadata.step_stats)
                 chrome_trace = fetched_timeline.generate_chrome_trace_format()
-                with open('timeline_01.json', 'w') as f:
+                with open(parameters['LOG_LOC']+'timeline_01.json', 'w') as f:
                     f.write(chrome_trace)
                 test_cost = session.run(cost, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
-                print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '+str(round(test_cost, 2)))
-            elif (i+1) % 100 == 0:  # just prints current cost
+                if parameters['TBOARD_OUTPUT'] == 'YES':
+                    outlog = session.run(merged_summaries, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
+                    writer.add_summary(outlog, i+1+inherit_iter_count)
+                print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '
+                      + str(round(test_cost, 2)))
+                print('Timeline saved as timeline_01.json in folder '+parameters['LOG_LOC'])
+            elif (i+1) % 100 == 0:  # just prints current cost and writes to log
                 session.run(optimize, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
                 test_cost = session.run(cost, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
+                if parameters['TBOARD_OUTPUT'] == 'YES':
+                    outlog = session.run(merged_summaries, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
+                    writer.add_summary(outlog, i+1+inherit_iter_count)
                 print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '+str(round(test_cost, 2)))
             else:  # just runs optimize
                 session.run(optimize, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
@@ -311,7 +336,7 @@ def train_neural_network(parameters):
         end_time = time.time()
         return str(round(end_time-begin_time, 2))
 
-    model_dir = '../repo_saved_models/model_200_250_200_600/save.ckpt'
+    model_dir = parameters['SAVE_LOC']
 
     # optimization function with control for continued training with different learning rate
 
@@ -320,8 +345,11 @@ def train_neural_network(parameters):
     run_metadata = tf.RunMetadata()
     session.run(tf.global_variables_initializer())
     saver = tf.train.Saver()
+    if parameters['TBOARD_OUTPUT'] == 'YES':
+        writer = tf.summary.FileWriter(parameters['LOG_LOC']+'logs', session.graph)
+        merged_summaries = tf.summary.merge_all()
     execute_time = train_loop(int(parameters['NUM_TRAIN_ITERS1']), float(parameters['LEARN_RATE1']),
-                              float(parameters['KEEP_PROB1']))
+                              float(parameters['KEEP_PROB1']), inherit_iter_count=0)
     save_path = saver.save(session, model_dir)
     session.close()
     print('Training stage 1 finished in '+execute_time+'s, model saved in '+save_path)
@@ -332,7 +360,8 @@ def train_neural_network(parameters):
         saver.restore(session, model_dir)
         print('Model loaded, beginning training...')
         execute_time = train_loop(int(parameters['NUM_TRAIN_ITERS2']), float(parameters['LEARN_RATE2']),
-                                  float(parameters['KEEP_PROB2']))
+                                  float(parameters['KEEP_PROB2']),
+                                  inherit_iter_count=int(parameters['NUM_TRAIN_ITERS1']))
         save_path = saver.save(session, model_dir)
         session.close()
         print('Training stage 2 finished in ' + execute_time + 's, model saved in ' + save_path)
