@@ -150,7 +150,7 @@ def preprocess_spectra(fluxes, interpolated_sn, sn_array, y_offset_array):
 
 
 def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_values, sn_range, interp_sn, y_off_range,
-                 fetch_size):
+                 fetch_size, randomize):
     """basically a wrapper function that takes in fluxes and raw params and adds a random preprocessed example to queue
     INPUTS
     session: tensorflow session
@@ -160,13 +160,18 @@ def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_valu
     pixel_values: output from read_known_binary
     sn_range: sn_range to sample
     y_offset_range: continuum error range to sample
+    randomize: randomly draw fetch_size examples if true, if not true then draw the first fetch_size examples
     OUTPUTS
     N/A, this just wraps the preprocessing and enqueue ops into a threadable function
     """
     while not coordinator.should_stop():
             np.random.seed()
             num_stars = np.size(pix_values[:, 0])
-            select_star = np.random.randint(0, num_stars-1, size=(fetch_size, 1))
+            if randomize:
+                select_star = np.random.randint(0, num_stars-1, size=(fetch_size, 1))
+            if not randomize:
+                select_star = np.arange(0, fetch_size)
+                select_star = np.reshape(select_star, (fetch_size, 1))
             fluxes = pix_values[select_star[:, 0], :]
             sn_values = np.random.uniform(sn_range[0], sn_range[1], size=(fetch_size, 1))
             y_offsets = np.random.uniform(y_off_range[0], y_off_range[1], size=(fetch_size, 1))
@@ -176,14 +181,15 @@ def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_valu
             try:
                 session.run(queue_operation, feed_dict={image_data: proc_fluxes, known_params: known})
             except tf.errors.CancelledError:
-                print('Queue closed, exiting training')
+                if randomize:
+                    print('Input queue closed, exiting training')
 
 
 parameters = read_param_file('ANNA.param')
 
 
 with tf.name_scope('NETWORK_HYPERPARAMS'):
-    batch_size = int(parameters['BATCH_SIZE1'])
+    batch_size = tf.placeholder(tf.int32)
     num_px = int(parameters['NUM_PX'])
     cl1_shape = np.fromstring(parameters['CONV1_SHAPE'], sep=', ', dtype=np.int32)
     fc1_num_weights = int(parameters['FC1_OUTDIM'])
@@ -191,6 +197,8 @@ with tf.name_scope('NETWORK_HYPERPARAMS'):
     num_outputs = int(parameters['NUM_OUTS'])
     known_params = tf.placeholder(tf.float32, shape=[None, num_outputs])
     image_data = tf.placeholder(tf.float32, shape=[None, num_px])
+    xval_params = tf.placeholder(tf.float32, shape=[None, num_outputs])
+    xval_data = tf.placeholder(tf.float32, shape=[None, num_px])
     learning_rate = tf.placeholder(tf.float32)
     dropout = tf.placeholder(tf.float32)
     pp_depth = int(parameters['MAX_PP_DEPTH'])
@@ -199,11 +207,20 @@ with tf.name_scope('NETWORK_HYPERPARAMS'):
 with tf.name_scope('INPUT_QUEUE'):
     input_queue = tf.FIFOQueue(capacity=pp_depth, dtypes=[tf.float32, tf.float32],
                                             shapes=[[num_outputs], [num_px]])
-    queue_operation = input_queue.enqueue_many([known_params, image_data])
+    queue_op = input_queue.enqueue_many([known_params, image_data])
+
+# adding a second queue to handle xval data - this is just unused if xval option is unused
+with tf.name_scope('XVAL_QUEUE'):
+    xval_queue = tf.FIFOQueue(capacity=pp_depth, dtypes=[tf.float32, tf.float32],
+                              shapes=[[num_outputs], [num_px]])
+    xval_op = xval_queue.enqueue_many([known_params, image_data])
+
+with tf.name_scope('MASTER_QUEUE'):
+    select_queue = tf.placeholder(tf.int32, [])
+    master_queue = tf.QueueBase.from_list(select_queue, [input_queue, xval_queue])
     batch_outputs, batch_pixels = input_queue.dequeue_many(batch_size)
     pixels_shaped = tf.reshape(batch_pixels, [batch_size, 1, num_px, 1])
     outputs_shaped = tf.reshape(batch_outputs, [batch_size, num_outputs])
-
 
 # initialize weights and biases for conv layer 1
 with tf.name_scope('CONV1_TENSORS'):
@@ -291,50 +308,118 @@ def train_neural_network(parameters):
     fetch_size = int(parameters['NUM_FETCH'])
     wavelengths, normed_outputs, pix_values = read_known_binary(parameters['TRAINING_DATA'], parameters, minvals, maxvals)
     interp_sn = interpolate_sn(sn_template_file, wavelengths)
+    bsize_train1 = int(parameters['BATCH_SIZE1'])
+    if parameters['TRAINING_XVAL'] == 'YES':
+        xv_wave, xv_norm_out, xv_px_val = read_known_binary(parameters['XVAL_DATA'], parameters, minvals, maxvals)
+        xv_size = int(parameters['XVAL_SIZE'])
+
+    def xval_subloop(learn_rate, bsize):
+        xvcoordinator = tf.train.Coordinator()
+        randomize = False
+        num_xvthread = int(parameters['XV_THREADS'])
+        with tf.device("/cpu:0"):
+            xval_threads = [threading.Thread(target=add_to_queue, args=(session, xval_op, xvcoordinator, xv_norm_out,
+                                                                      xv_px_val, sn_range, interp_sn, y_off_range,
+                                                                      xv_size, randomize)) for i in range(num_xvthread)]
+            for i in xval_threads:
+                i.start()
+        feed_dict_xval = {learning_rate: learn_rate, dropout: 1.0, batch_size: bsize, select_queue: 1}
+        xval_cost = session.run(cost, feed_dict=feed_dict_xval)
+        xvcoordinator.request_stop()
+        session.run(xval_queue.close(cancel_pending_enqueues=True))
+        xvcoordinator.join(xval_threads)
+        return round(xval_cost, 2)
+
     # definition of the training loop in order to allow for multistage training
 
-    def train_loop(iterations, learn_rate, keep_prob, inherit_iter_count):
+    def train_loop(iterations, learn_rate, keep_prob, bsize, inherit_iter_count):
         begin_time = time.time()
         coordinator = tf.train.Coordinator()
+        randomize = True
         with tf.device("/cpu:0"):
             num_threads = int(parameters['PP_THREADS'])
-            enqueue_threads = [threading.Thread(target=add_to_queue, args=(session, queue_operation, coordinator,
-                                                                 normed_outputs, pix_values, sn_range, interp_sn,
-                                                                 y_off_range, fetch_size)) for i in range(num_threads)]
+            enqueue_threads = [threading.Thread(target=add_to_queue, args=(session, queue_op, coordinator,
+                                                                           normed_outputs, pix_values, sn_range,
+                                                                           interp_sn, y_off_range, fetch_size,
+                                                                           randomize)) for i in range(num_threads)]
             for i in enqueue_threads:
                 i.start()
         time.sleep(1)
+        feed_dict_train = {learning_rate: learn_rate, dropout: keep_prob, batch_size: bsize, select_queue: 0}
+        early_stop_counter = 0
+        completed_iterations = 0
+        best_cost = 0.0
+        if parameters['EARLY_STOP'] == 'YES':
+            early_stop_threshold = int(parameters['ES_SAMPLE'])
+        else:
+            early_stop_threshold = iterations
         for i in range(iterations):
-            if (i+1) == iterations and parameters['TIMELINE_OUTPUT'] == 'YES':
-                # prints a timeline object and current cost for last iteration and writes to log
-                session.run(optimize, options=options, run_metadata=run_metadata,
-                            feed_dict={learning_rate: learn_rate, dropout: keep_prob})
-                # Create the Timeline object, and write it to a json file
-                fetched_timeline = timeline.Timeline(run_metadata.step_stats)
-                chrome_trace = fetched_timeline.generate_chrome_trace_format()
-                with open(parameters['LOG_LOC']+'timeline_01.json', 'w') as f:
-                    f.write(chrome_trace)
-                test_cost = session.run(cost, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
-                if parameters['TBOARD_OUTPUT'] == 'YES':
-                    outlog = session.run(merged_summaries, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
-                    writer.add_summary(outlog, i+1+inherit_iter_count)
-                print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '
+            if early_stop_counter <= early_stop_threshold:
+                completed_iterations += 1
+                if i == 0:
+                    if parameters['TRAINING_XVAL'] == 'YES':
+                        init_cost = xval_subloop(learn_rate, xv_size)
+                        best_cost = init_cost
+                        print('Initial xval cost: '+str(round(init_cost, 2)))
+                        session.run(optimize, feed_dict=feed_dict_train)
+                    else:
+                        init_cost = session.run(cost, feed_dict=feed_dict_train)
+                        best_cost = init_cost
+                        print('Initial batch cost: '+str(round(init_cost, 2)))
+                        session.run(optimize, feed_dict=feed_dict_train)
+                elif (i+1) % int(parameters['SAMPLE_INTERVAL']) == 0:  # just prints current cost and writes to log
+                    session.run(optimize, feed_dict=feed_dict_train)
+                    test_cost = session.run(cost, feed_dict=feed_dict_train)
+                    if parameters['TRAINING_XVAL'] == 'YES':
+                        xvcost = xval_subloop(learn_rate, xv_size)
+                        print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '
+                          + str(round(test_cost, 2))+', xval cost: '+str(xvcost))
+                    else:
+                        print('done with batch ' + str(int(i + 1)) + '/' + str(iterations) + ', current cost: '
+                          + str(round(test_cost, 2)))
+                    if parameters['EARLY_STOP'] == 'YES':
+                        if parameters['TRAINING_XVAL'] == 'YES':
+                            if float(xvcost) >= best_cost:
+                                early_stop_counter += 1
+                            else:
+                                best_cost = xvcost
+                                early_stop_counter = 0
+                        else:
+                            if float(test_cost) >= best_cost:
+                                early_stop_counter += 1
+                            else:
+                                best_cost = test_cost
+                                early_stop_counter = 0
+                    if parameters['TBOARD_OUTPUT'] == 'YES':
+                        outlog = session.run(merged_summaries, feed_dict=feed_dict_train)
+                        writer.add_summary(outlog, i+1+inherit_iter_count)
+                elif (i+1) == iterations and parameters['TIMELINE_OUTPUT'] == 'YES':
+                    # prints a timeline object and current cost for last iteration and writes to log
+                    session.run(optimize, options=options, run_metadata=run_metadata, feed_dict=feed_dict_train)
+                    # Create the Timeline object, and write it to a json file
+                    fetched_timeline = timeline.Timeline(run_metadata.step_stats)
+                    chrome_trace = fetched_timeline.generate_chrome_trace_format()
+                    with open(parameters['LOG_LOC']+'timeline_01.json', 'w') as f:
+                        f.write(chrome_trace)
+                    test_cost = session.run(cost, feed_dict=feed_dict_train)
+                    if parameters['TBOARD_OUTPUT'] == 'YES':
+                        outlog = session.run(merged_summaries, feed_dict=feed_dict_train)
+                        writer.add_summary(outlog, i+1+inherit_iter_count)
+                    print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '
                       + str(round(test_cost, 2)))
-                print('Timeline saved as timeline_01.json in folder '+parameters['LOG_LOC'])
-            elif (i+1) % 100 == 0:  # just prints current cost and writes to log
-                session.run(optimize, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
-                test_cost = session.run(cost, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
-                if parameters['TBOARD_OUTPUT'] == 'YES':
-                    outlog = session.run(merged_summaries, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
-                    writer.add_summary(outlog, i+1+inherit_iter_count)
-                print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '+str(round(test_cost, 2)))
-            else:  # just runs optimize
-                session.run(optimize, feed_dict={learning_rate: learn_rate, dropout: keep_prob})
+                    print('Timeline saved as timeline_01.json in folder '+parameters['LOG_LOC'])
+                else:  # just runs optimize
+                    session.run(optimize, feed_dict=feed_dict_train)
+            else:
+                if parameters['EARLY_STOP'] == 'YES' and early_stop_counter == (early_stop_threshold+1):
+                    print('Early stop threshold or specified iterations met')
+                early_stop_counter += 1
+
         coordinator.request_stop()
         session.run(input_queue.close(cancel_pending_enqueues=True))
         coordinator.join(enqueue_threads)
         end_time = time.time()
-        return str(round(end_time-begin_time, 2))
+        return str(round(end_time-begin_time, 2)), completed_iterations
 
     model_dir = parameters['SAVE_LOC']
 
@@ -348,20 +433,21 @@ def train_neural_network(parameters):
     if parameters['TBOARD_OUTPUT'] == 'YES':
         writer = tf.summary.FileWriter(parameters['LOG_LOC']+'logs', session.graph)
         merged_summaries = tf.summary.merge_all()
-    execute_time = train_loop(int(parameters['NUM_TRAIN_ITERS1']), float(parameters['LEARN_RATE1']),
-                              float(parameters['KEEP_PROB1']), inherit_iter_count=0)
+    execute_time, finished_iters = train_loop(int(parameters['NUM_TRAIN_ITERS1']), float(parameters['LEARN_RATE1']),
+                                              float(parameters['KEEP_PROB1']), bsize_train1, inherit_iter_count=0)
     save_path = saver.save(session, model_dir)
     session.close()
     print('Training stage 1 finished in '+execute_time+'s, model saved in '+save_path)
     if parameters['DO_TRAIN2'] == 'YES':
+        bsize_train2 = int(parameters['BATCH_SIZE2'])
         print('Training stage 2 beginning, loading model...')
         session = tf.Session()
         saver = tf.train.Saver()
         saver.restore(session, model_dir)
         print('Model loaded, beginning training...')
-        execute_time = train_loop(int(parameters['NUM_TRAIN_ITERS2']), float(parameters['LEARN_RATE2']),
-                                  float(parameters['KEEP_PROB2']),
-                                  inherit_iter_count=int(parameters['NUM_TRAIN_ITERS1']))
+        execute_time, _ = train_loop(int(parameters['NUM_TRAIN_ITERS2']), float(parameters['LEARN_RATE2']),
+                                  float(parameters['KEEP_PROB2']), bsize_train2,
+                                  inherit_iter_count=finished_iters)
         save_path = saver.save(session, model_dir)
         session.close()
         print('Training stage 2 finished in ' + execute_time + 's, model saved in ' + save_path)
