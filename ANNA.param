@@ -8,20 +8,20 @@ FC2_OUTDIM: 16
 NUM_OUTS: 5
 
 # learning rate for first stage of training
-LEARN_RATE1: 1e-8
+LEARN_RATE1: 5e-5
 # number of iterations for first stage of training
-NUM_TRAIN_ITERS1: 200
+NUM_TRAIN_ITERS1: 1000
 # batch size for first stage of training
 BATCH_SIZE1: 100
 # probability to retain node during first stage of training
-KEEP_PROB1: 1.0
+KEEP_PROB1: 0.9
 
 # flag to control second stage (YES/NO)
 DO_TRAIN2: YES
 # learning rate for second stage of training
 LEARN_RATE2: 5e-5
 # number of iterations for second stage of training
-NUM_TRAIN_ITERS2: 200
+NUM_TRAIN_ITERS2: 5000
 # batch size for second stage of training
 BATCH_SIZE2: 100
 # probability to retain node during second stage of training
@@ -42,14 +42,44 @@ SN_RANGE_TEST: 200.0, 250.0
 NUM_FETCH: 10000
 
 # binary file containing training data
-TRAINING_DATA: allspec_train_200_600
+TRAINING_DATA: ../../ANNA_CNN/110ktrain_5ktest/allspec_train_200_600
 # binary file containing testing data
 TESTING_DATA: allspec_test_200_600
+# folder to save/load model
+SAVE_LOC: ../repo_saved_models/model_200_250_200_600/save.ckpt
 
 # minimum values of [temp, grav, [fe/h], vt, rotv]
 MIN_PARAMS: 4000.0, 2.7, -0.5, 0.0, 0.0
 # minimum values of [temp, grav, [fe/h], vt, rotv]
 MAX_PARAMS: 7000.0, 4.8, 0.2, 3.0, 90.0
+
+# interval (in batches) between printing cost and writing to logfiles
+SAMPLE_INTERVAL: 25
+# number of preprocessing threads
+PP_THREADS: 1
+# preprocessing max queue depth
+MAX_PP_DEPTH: 200000
+# folder to save log files
+LOG_LOC: ../repo_logs/
+# output a .json timeline indicating various execution times (YES/NO)
+TIMELINE_OUTPUT: YES
+# log weight, cost, and graph information in the log directory for tensorboard
+TBOARD_OUTPUT: YES
+
+# perform cross-validation during training
+TRAINING_XVAL: YES
+# cross-validation dataset location (binary)
+XVAL_DATA: allspec_test_200_600
+# size of cross-validation set to construct (same set every time)
+XVAL_SIZE: 2000
+# number of threads to spawn for cross-validation construction
+XV_THREADS: 1
+
+# early stopping toggle (will use the xval set if specified, otherwise will use the current batch)
+EARLY_STOP: YES
+# number of sampling intervals cost must improve within
+ES_SAMPLE: 1
+
 
 
 
