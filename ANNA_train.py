@@ -150,7 +150,7 @@ def preprocess_spectra(fluxes, interpolated_sn, sn_array, y_offset_array):
 
 
 def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_values, sn_range, interp_sn, y_off_range,
-                 fetch_size, randomize):
+                 fetch_size, randomize, preprocess):
     """basically a wrapper function that takes in fluxes and raw params and adds a random preprocessed example to queue
     INPUTS
     session: tensorflow session
@@ -173,11 +173,15 @@ def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_valu
                 select_star = np.arange(0, fetch_size)
                 select_star = np.reshape(select_star, (fetch_size, 1))
             fluxes = pix_values[select_star[:, 0], :]
-            sn_values = np.random.uniform(sn_range[0], sn_range[1], size=(fetch_size, 1))
-            y_offsets = np.random.uniform(y_off_range[0], y_off_range[1], size=(fetch_size, 1))
-            #  strip off star num, radial velocity info
-            known = normed_outputs[select_star[:, 0], 1:-1]
-            proc_fluxes = preprocess_spectra(fluxes, interp_sn, sn_values, y_offsets)
+            if preprocess:
+                sn_values = np.random.uniform(sn_range[0], sn_range[1], size=(fetch_size, 1))
+                y_offsets = np.random.uniform(y_off_range[0], y_off_range[1], size=(fetch_size, 1))
+                #  strip off star num, radial velocity info
+                known = normed_outputs[select_star[:, 0], 1:-1]
+                proc_fluxes = preprocess_spectra(fluxes, interp_sn, sn_values, y_offsets)
+            else:
+                known = normed_outputs[select_star[:, 0], 1:-1]
+                proc_fluxes = fluxes
             try:
                 session.run(queue_operation, feed_dict={image_data: proc_fluxes, known_params: known})
             except tf.errors.CancelledError:
@@ -275,12 +279,13 @@ with tf.name_scope('FC3_TENSORS'):
 # compute output of the network using fully connected layer 2 with no activation function or biases
 with tf.name_scope('FC3_LAYER'):
     fc_output = cv.layer_fc(input=fc2_dropout, weights=fc3_weight)
-
+    tf.add_to_collection('fc_output', fc_output)
 
 # cost function for the network
 with tf.name_scope('COST'):
     cost = cv.network_cost(predicted_vals=fc_output, known_vals=outputs_shaped, type='l2')
     tf.summary.scalar("COST", cost)
+    tf.add_to_collection('cost', cost)
 
 with tf.name_scope('OPTIMIZE'):
     optimize = cv.network_optimize(cost, learn_rate=learning_rate, optimizer='adam')
@@ -300,62 +305,101 @@ with tf.name_scope('VISUALS'):
 
 
 def train_neural_network(parameters):
+    # import parameter values for normalizing known input parameters and preprocessing spectra
     minvals = np.fromstring(parameters['MIN_PARAMS'], sep=', ', dtype=np.float32)
     maxvals = np.fromstring(parameters['MAX_PARAMS'], sep=', ', dtype=np.float32)
-    sn_range = np.fromstring(parameters['SN_RANGE_TRAIN'], sep=', ', dtype=np.float32)
-    y_off_range = np.fromstring(parameters['REL_CONT_E_TRAIN'], sep=', ', dtype=np.float32)
-    sn_template_file = parameters['SN_TEMPLATE']
+    # read in the training data
+    wavelengths, normed_outputs, pix_values = \
+        read_known_binary(parameters['TRAINING_DATA'], parameters, minvals, maxvals)
+    if parameters['PREPROCESS_TRAIN'] == 'YES':
+        sn_range = np.fromstring(parameters['SN_RANGE_TRAIN'], sep=', ', dtype=np.float32)
+        y_off_range = np.fromstring(parameters['REL_CONT_E_TRAIN'], sep=', ', dtype=np.float32)
+        sn_template_file = parameters['SN_TEMPLATE']
+        interp_sn = interpolate_sn(sn_template_file, wavelengths)
+    else:
+        sn_range, y_off_range, interp_sn = 0, 0, 0
+        sn_template_file = 'none'
     fetch_size = int(parameters['NUM_FETCH'])
-    wavelengths, normed_outputs, pix_values = read_known_binary(parameters['TRAINING_DATA'], parameters, minvals, maxvals)
-    interp_sn = interpolate_sn(sn_template_file, wavelengths)
     bsize_train1 = int(parameters['BATCH_SIZE1'])
+    # if separate xval set specified, read that in
     if parameters['TRAINING_XVAL'] == 'YES':
         xv_wave, xv_norm_out, xv_px_val = read_known_binary(parameters['XVAL_DATA'], parameters, minvals, maxvals)
         xv_size = int(parameters['XVAL_SIZE'])
+        if parameters['PREPROCESS_XVAL'] == 'YES':
+            # this could reload parameters, but allows for case of not preprocessing training but preprocess xval
+            sn_template_file = parameters['SN_TEMPLATE']
+            interp_sn = interpolate_sn(sn_template_file, wavelengths)
+            sn_range = np.fromstring(parameters['SN_RANGE_TRAIN'], sep=', ', dtype=np.float32)
+            y_off_range = np.fromstring(parameters['REL_CONT_E_TRAIN'], sep=', ', dtype=np.float32)
 
+    # subloop definition to build a separate queue for xval data if it exists and calculate the cost
     def xval_subloop(learn_rate, bsize):
         xvcoordinator = tf.train.Coordinator()
         randomize = False
+        # if xval preprocessing desired, flip the correct flat in add_to_queue
+        if parameters['PREPROCESS_XVAL'] == 'YES':
+            xval_training = True
+        else:
+            xval_training = False
         num_xvthread = int(parameters['XV_THREADS'])
+        # force preprocessing to run on the cpu
         with tf.device("/cpu:0"):
             xval_threads = [threading.Thread(target=add_to_queue, args=(session, xval_op, xvcoordinator, xv_norm_out,
-                                                                      xv_px_val, sn_range, interp_sn, y_off_range,
-                                                                      xv_size, randomize)) for i in range(num_xvthread)]
+                                                                        xv_px_val, sn_range, interp_sn, y_off_range,
+                                                                        xv_size, randomize,
+                                                                        xval_training)) for i in range(num_xvthread)]
             for i in xval_threads:
                 i.start()
         feed_dict_xval = {learning_rate: learn_rate, dropout: 1.0, batch_size: bsize, select_queue: 1}
         xval_cost = session.run(cost, feed_dict=feed_dict_xval)
+        # close the queue and join threads
         xvcoordinator.request_stop()
         session.run(xval_queue.close(cancel_pending_enqueues=True))
         xvcoordinator.join(xval_threads)
+        # return cost
         return round(xval_cost, 2)
 
     # definition of the training loop in order to allow for multistage training
-
     def train_loop(iterations, learn_rate, keep_prob, bsize, inherit_iter_count):
         begin_time = time.time()
         coordinator = tf.train.Coordinator()
+        # will always randomize batch selection for training
         randomize = True
+        # if training preprocessing desired, flips appropriate flag
+        if parameters['PREPROCESS_TRAIN'] == 'YES':
+            pp_training = True
+        else:
+            pp_training = False
+        # force preprocessing to run on the cpu
         with tf.device("/cpu:0"):
             num_threads = int(parameters['PP_THREADS'])
             enqueue_threads = [threading.Thread(target=add_to_queue, args=(session, queue_op, coordinator,
                                                                            normed_outputs, pix_values, sn_range,
                                                                            interp_sn, y_off_range, fetch_size,
-                                                                           randomize)) for i in range(num_threads)]
+                                                                           randomize,
+                                                                           pp_training)) for i in range(num_threads)]
             for i in enqueue_threads:
                 i.start()
+        # delay running training by 1 second in order to prefill the queue
         time.sleep(1)
         feed_dict_train = {learning_rate: learn_rate, dropout: keep_prob, batch_size: bsize, select_queue: 0}
+        # controls early stopping threshold
         early_stop_counter = 0
+        # stores completed iterations to pass to second stage of training for tensorboard visualization
         completed_iterations = 0
+        # stores best cost in order to control early stopping
         best_cost = 0.0
+        # fetches early stop threshold if early stopping is enabled, otherwise just sets early stop iters to total iters
         if parameters['EARLY_STOP'] == 'YES':
             early_stop_threshold = int(parameters['ES_SAMPLE'])
         else:
             early_stop_threshold = iterations
+        # main training loop
         for i in range(iterations):
+            # only continues if early stop threshold has not been met
             if early_stop_counter <= early_stop_threshold:
                 completed_iterations += 1
+                # first iteration will store the cost under best_cost for xval if xval specified, current batch if not
                 if i == 0:
                     if parameters['TRAINING_XVAL'] == 'YES':
                         init_cost = xval_subloop(learn_rate, xv_size)
@@ -367,21 +411,25 @@ def train_neural_network(parameters):
                         best_cost = init_cost
                         print('Initial batch cost: '+str(round(init_cost, 2)))
                         session.run(optimize, feed_dict=feed_dict_train)
-                elif (i+1) % int(parameters['SAMPLE_INTERVAL']) == 0:  # just prints current cost and writes to log
-                    session.run(optimize, feed_dict=feed_dict_train)
+                # if not first iteration but iteration corresponding to sample interval, runs diagnostics
+                elif (i+1) % int(parameters['SAMPLE_INTERVAL']) == 0:
                     test_cost = session.run(cost, feed_dict=feed_dict_train)
+                    session.run(optimize, feed_dict=feed_dict_train)
                     if parameters['TRAINING_XVAL'] == 'YES':
                         xvcost = xval_subloop(learn_rate, xv_size)
                         print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '
                           + str(round(test_cost, 2))+', xval cost: '+str(xvcost))
                     else:
+                        # if xval set not specified, will just calculate cost for current batch and print
                         print('done with batch ' + str(int(i + 1)) + '/' + str(iterations) + ', current cost: '
                           + str(round(test_cost, 2)))
                     if parameters['EARLY_STOP'] == 'YES':
+                        # if early stopping desired, will compare xval or current batch cost to the best cost
                         if parameters['TRAINING_XVAL'] == 'YES':
                             if float(xvcost) >= best_cost:
                                 early_stop_counter += 1
                             else:
+                                # reset early stopping counter if current cost is better than previous best cost
                                 best_cost = xvcost
                                 early_stop_counter = 0
                         else:
@@ -391,59 +439,57 @@ def train_neural_network(parameters):
                                 best_cost = test_cost
                                 early_stop_counter = 0
                     if parameters['TBOARD_OUTPUT'] == 'YES':
+                        # if tensorboard logging enabled, stores visualization data
                         outlog = session.run(merged_summaries, feed_dict=feed_dict_train)
                         writer.add_summary(outlog, i+1+inherit_iter_count)
-                elif (i+1) == iterations and parameters['TIMELINE_OUTPUT'] == 'YES':
-                    # prints a timeline object and current cost for last iteration and writes to log
-                    session.run(optimize, options=options, run_metadata=run_metadata, feed_dict=feed_dict_train)
-                    # Create the Timeline object, and write it to a json file
+                else:  # just runs optimize if none of the above criteria are met
+                    session.run(optimize, feed_dict=feed_dict_train)
+            if early_stop_counter == early_stop_threshold or (i == (iterations-1)
+                                                              and early_stop_counter < (early_stop_threshold+1)):
+                # if end of training reached, print a message and optionally save timeline
+                print('Early stop threshold or specified iterations met')
+                if parameters['TIMELINE_OUTPUT'] == 'YES':
+                    # if timeline desired, prints to json file for most recent iteration
                     fetched_timeline = timeline.Timeline(run_metadata.step_stats)
                     chrome_trace = fetched_timeline.generate_chrome_trace_format()
-                    with open(parameters['LOG_LOC']+'timeline_01.json', 'w') as f:
+                    with open(parameters['LOG_LOC'] + 'timeline_01.json', 'w') as f:
                         f.write(chrome_trace)
-                    test_cost = session.run(cost, feed_dict=feed_dict_train)
-                    if parameters['TBOARD_OUTPUT'] == 'YES':
-                        outlog = session.run(merged_summaries, feed_dict=feed_dict_train)
-                        writer.add_summary(outlog, i+1+inherit_iter_count)
-                    print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '
-                      + str(round(test_cost, 2)))
-                    print('Timeline saved as timeline_01.json in folder '+parameters['LOG_LOC'])
-                else:  # just runs optimize
-                    session.run(optimize, feed_dict=feed_dict_train)
-            else:
-                if parameters['EARLY_STOP'] == 'YES' and early_stop_counter == (early_stop_threshold+1):
-                    print('Early stop threshold or specified iterations met')
+                    print('Timeline saved as timeline_01.json in folder ' + parameters['LOG_LOC'])
                 early_stop_counter += 1
-
+        # close the preprocessing queues and join threads
         coordinator.request_stop()
         session.run(input_queue.close(cancel_pending_enqueues=True))
         coordinator.join(enqueue_threads)
         end_time = time.time()
+        # return the run time and total completed iterations
         return str(round(end_time-begin_time, 2)), completed_iterations
 
+    # control flow for training - load in save location, etc. launch tensorflow session, prepare saver
     model_dir = parameters['SAVE_LOC']
-
-    # optimization function with control for continued training with different learning rate
-
     session = tf.Session()
     options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
     run_metadata = tf.RunMetadata()
     session.run(tf.global_variables_initializer())
     saver = tf.train.Saver()
+    # if tboard output desired start a writer
     if parameters['TBOARD_OUTPUT'] == 'YES':
         writer = tf.summary.FileWriter(parameters['LOG_LOC']+'logs', session.graph)
         merged_summaries = tf.summary.merge_all()
+    # train the network on input training data
     execute_time, finished_iters = train_loop(int(parameters['NUM_TRAIN_ITERS1']), float(parameters['LEARN_RATE1']),
                                               float(parameters['KEEP_PROB1']), bsize_train1, inherit_iter_count=0)
-    save_path = saver.save(session, model_dir)
+    # save model and the graph and close session
+    save_path = saver.save(session, model_dir+'save.ckpt')
+    saver.export_meta_graph(model_dir+'meta')
     session.close()
-    print('Training stage 1 finished in '+execute_time+'s, model saved in '+save_path)
+    print('Training stage 1 finished in '+execute_time+'s, model and graph saved in '+save_path)
     if parameters['DO_TRAIN2'] == 'YES':
+        # if multistage training specified, repeat above process except for the metagraph saving
         bsize_train2 = int(parameters['BATCH_SIZE2'])
         print('Training stage 2 beginning, loading model...')
         session = tf.Session()
         saver = tf.train.Saver()
-        saver.restore(session, model_dir)
+        saver.restore(session, model_dir+'save.ckpt')
         print('Model loaded, beginning training...')
         execute_time, _ = train_loop(int(parameters['NUM_TRAIN_ITERS2']), float(parameters['LEARN_RATE2']),
                                   float(parameters['KEEP_PROB2']), bsize_train2,
@@ -452,4 +498,5 @@ def train_neural_network(parameters):
         session.close()
         print('Training stage 2 finished in ' + execute_time + 's, model saved in ' + save_path)
 
-train_neural_network(parameters)
+if __name__ == '__MAIN__':
+    train_neural_network(parameters)
