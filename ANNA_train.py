@@ -1,4 +1,5 @@
 import tensorflow as tf
+print(tf.__version__)
 import convnet2 as cv
 import numpy as np
 import pandas as pd
@@ -191,117 +192,145 @@ def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_valu
 
 parameters = read_param_file('ANNA.param')
 
+# the network architecture, only called if this file is run as main
+if __name__ == '__main__':
+    with tf.name_scope('NETWORK_HYPERPARAMS'):
+        batch_size = tf.placeholder(tf.int32, name='batch_size')
+        num_px = int(parameters['NUM_PX'])
+        cl1_shape = np.fromstring(parameters['CONV1_SHAPE'], sep=', ', dtype=np.int32)
+        fc1_num_weights = int(parameters['FC1_OUTDIM'])
+        fc2_num_weights = int(parameters['FC2_OUTDIM'])
+        num_outputs = int(parameters['NUM_OUTS'])
+        known_params = tf.placeholder(tf.float32, shape=[None, num_outputs], name='known_params')
+        image_data = tf.placeholder(tf.float32, shape=[None, num_px], name='image_data')
+        xval_params = tf.placeholder(tf.float32, shape=[None, num_outputs], name='xval_params')
+        xval_data = tf.placeholder(tf.float32, shape=[None, num_px], name='xval_data')
+        learning_rate = tf.placeholder(tf.float32, name='learning_rate')
+        dropout = tf.placeholder(tf.float32, name='dropout')
+        pp_depth = int(parameters['MAX_PP_DEPTH'])
+        tf.add_to_collection('learning_rate', learning_rate)
+        tf.add_to_collection('dropout', dropout)
+        tf.add_to_collection('batch_size', batch_size)
+        tf.add_to_collection('image_data', image_data)
+        tf.add_to_collection('known_params', known_params)
 
-with tf.name_scope('NETWORK_HYPERPARAMS'):
-    batch_size = tf.placeholder(tf.int32)
-    num_px = int(parameters['NUM_PX'])
-    cl1_shape = np.fromstring(parameters['CONV1_SHAPE'], sep=', ', dtype=np.int32)
-    fc1_num_weights = int(parameters['FC1_OUTDIM'])
-    fc2_num_weights = int(parameters['FC2_OUTDIM'])
-    num_outputs = int(parameters['NUM_OUTS'])
-    known_params = tf.placeholder(tf.float32, shape=[None, num_outputs])
-    image_data = tf.placeholder(tf.float32, shape=[None, num_px])
-    xval_params = tf.placeholder(tf.float32, shape=[None, num_outputs])
-    xval_data = tf.placeholder(tf.float32, shape=[None, num_px])
-    learning_rate = tf.placeholder(tf.float32)
-    dropout = tf.placeholder(tf.float32)
-    pp_depth = int(parameters['MAX_PP_DEPTH'])
 
-# the input queue - handles building random batches and contains wrapper for preprocessing
-with tf.name_scope('INPUT_QUEUE'):
-    input_queue = tf.FIFOQueue(capacity=pp_depth, dtypes=[tf.float32, tf.float32],
-                                            shapes=[[num_outputs], [num_px]])
-    queue_op = input_queue.enqueue_many([known_params, image_data])
+    # the input queue - handles building random batches and contains wrapper for preprocessing
+    with tf.name_scope('INPUT_QUEUE'):
+        input_queue = tf.FIFOQueue(capacity=pp_depth, dtypes=[tf.float32, tf.float32],
+                                                shapes=[[num_outputs], [num_px]])
+        queue_op = input_queue.enqueue_many([known_params, image_data])
 
-# adding a second queue to handle xval data - this is just unused if xval option is unused
-with tf.name_scope('XVAL_QUEUE'):
-    xval_queue = tf.FIFOQueue(capacity=pp_depth, dtypes=[tf.float32, tf.float32],
-                              shapes=[[num_outputs], [num_px]])
-    xval_op = xval_queue.enqueue_many([known_params, image_data])
+    # adding a second queue to handle xval data - this is just unused if xval option is unused
+    with tf.name_scope('XVAL_QUEUE'):
+        xval_queue = tf.FIFOQueue(capacity=pp_depth, dtypes=[tf.float32, tf.float32],
+                                  shapes=[[num_outputs], [num_px]])
+        xval_op = xval_queue.enqueue_many([known_params, image_data])
+        tf.add_to_collection('xval_op', xval_op)
+        tf.add_to_collection('xval_queue', xval_queue)
 
-with tf.name_scope('MASTER_QUEUE'):
-    select_queue = tf.placeholder(tf.int32, [])
-    master_queue = tf.QueueBase.from_list(select_queue, [input_queue, xval_queue])
-    batch_outputs, batch_pixels = input_queue.dequeue_many(batch_size)
-    pixels_shaped = tf.reshape(batch_pixels, [batch_size, 1, num_px, 1])
-    outputs_shaped = tf.reshape(batch_outputs, [batch_size, num_outputs])
+    with tf.name_scope('MASTER_QUEUE'):
+        select_queue = tf.placeholder(tf.int32, [])
+        master_queue = tf.QueueBase.from_list(select_queue, [input_queue, xval_queue])
+        batch_outputs, batch_pixels = input_queue.dequeue_many(batch_size)
+        batch_pixels = tf.identity(batch_pixels, name='testpx')
+        batch_outputs = tf.identity(batch_outputs, name='testoutput')
+        pixels_shaped = tf.reshape(batch_pixels, [batch_size, 1, num_px, 1])
+        outputs_shaped = tf.reshape(batch_outputs, [batch_size, num_outputs])
+        tf.add_to_collection('select_queue', select_queue)
+        tf.add_to_collection('pixels_shaped', pixels_shaped)
 
-# initialize weights and biases for conv layer 1
-with tf.name_scope('CONV1_TENSORS'):
-    stdev1 = math.sqrt(2.0 / cl1_shape[1])
-    cl1_weight = cv.generate_weights(cl1_shape, type='custom',
-                                         function=tf.random_normal(cl1_shape, mean=0.00, stddev=stdev1))
-    cl1_bias = cv.generate_bias(length=cl1_shape[3], value=0.00)
+    # initialize weights and biases for conv layer 1
+    with tf.name_scope('CONV1_TENSORS'):
+        stdev1 = math.sqrt(2.0 / cl1_shape[1])
+        cl1_weight = cv.generate_weights(cl1_shape, type='custom',
+                                             function=tf.random_normal(cl1_shape, mean=0.00, stddev=stdev1))
+        cl1_bias = cv.generate_bias(length=cl1_shape[3], value=0.00)
 
-# Convolutional layer 1 with sigmoid activation, 1x3 max pooling, batch normalization
-with tf.name_scope('CONV1_LAYER'):
-    cl1 = cv.layer_conv(input=pixels_shaped, weights=cl1_weight)
-    cl1_activate = cv.layer_activate(input=cl1, bias=cl1_bias, type='relu')
-# Flatten output of convolutional network to prepare for fully-connected network
-with tf.name_scope('Flatten'):
-    flat_cl2, num_params = cv.layer_flatten(cl1_activate)
+    # Convolutional layer 1 with sigmoid activation, 1x3 max pooling, batch normalization
+    with tf.name_scope('CONV1_LAYER'):
+        cl1 = cv.layer_conv(input=pixels_shaped, weights=cl1_weight)
+        cl1_activate = cv.layer_activate(input=cl1, bias=cl1_bias, type='relu')
+    # Flatten output of convolutional network to prepare for fully-connected network
+    with tf.name_scope('Flatten'):
+        flat_cl2, num_params = cv.layer_flatten(cl1_activate)
 
-# initialize weights and biases for fully connected layer 1
-with tf.name_scope('FC1_TENSORS'):
-    fc1_shape = [num_params, fc1_num_weights]
-    stdev3 = math.sqrt(2.0 / (num_px * cl1_shape[3]))
-    fc1_weight = cv.generate_weights(fc1_shape, type='custom',
-                                         function=tf.random_normal(fc1_shape, mean=0.00, stddev=stdev3))
-    fc1_bias = cv.generate_bias(fc1_num_weights, value=0.00)
+    # initialize weights and biases for fully connected layer 1
+    with tf.name_scope('FC1_TENSORS'):
+        fc1_shape = [num_params, fc1_num_weights]
+        stdev3 = math.sqrt(2.0 / (num_px * cl1_shape[3]))
+        fc1_weight = cv.generate_weights(fc1_shape, type='custom',
+                                             function=tf.random_normal(fc1_shape, mean=0.00, stddev=stdev3))
+        fc1_bias = cv.generate_bias(fc1_num_weights, value=0.00)
 
-# fully connected layer 1 with sigmoid activation
-with tf.name_scope('FC1_LAYER'):
-    fc1 = cv.layer_fc(input=flat_cl2, weights=fc1_weight)
-    fc1_activate = cv.layer_activate(input=fc1, bias=fc1_bias, type='relu')
-    fc1_dropout = cv.layer_dropout(input=fc1_activate, keep_probability=dropout)
+    # fully connected layer 1 with sigmoid activation
+    with tf.name_scope('FC1_LAYER'):
+        fc1 = cv.layer_fc(input=flat_cl2, weights=fc1_weight, name='test2')
+        fc1_activate = cv.layer_activate(input=fc1, bias=fc1_bias, type='relu')
+        fc1_dropout = cv.layer_dropout(input=fc1_activate, keep_probability=dropout)
 
-# initialize weights for fully connected layer 2
-with tf.name_scope('FC2_TENSORS'):
-    fc2_shape = [fc1_num_weights, fc2_num_weights]
-    stdev4 = math.sqrt(2.0 / fc1_num_weights)
-    fc2_weight = cv.generate_weights(fc2_shape, type='custom',
-                                         function=tf.random_normal(fc2_shape, mean=0.00, stddev=stdev4))
-    fc2_bias = cv.generate_bias(fc2_num_weights, value=0.00)
+    # initialize weights for fully connected layer 2
+    with tf.name_scope('FC2_TENSORS'):
+        fc2_shape = [fc1_num_weights, fc2_num_weights]
+        stdev4 = math.sqrt(2.0 / fc1_num_weights)
+        fc2_weight = cv.generate_weights(fc2_shape, type='custom',
+                                             function=tf.random_normal(fc2_shape, mean=0.00, stddev=stdev4))
+        fc2_bias = cv.generate_bias(fc2_num_weights, value=0.00)
 
-# fully connected layer 2 with sigmoid activation
-with tf.name_scope('FC2_LAYER'):
-    fc2 = cv.layer_fc(input=fc1_dropout, weights=fc2_weight)
-    fc2_activate = cv.layer_activate(input=fc2, bias=fc2_bias, type='relu')
-    fc2_dropout = cv.layer_dropout(input=fc2_activate, keep_probability=dropout)
+    # fully connected layer 2 with sigmoid activation
+    with tf.name_scope('FC2_LAYER'):
+        fc2 = cv.layer_fc(input=fc1_dropout, weights=fc2_weight, name='test')
+        fc2_activate = cv.layer_activate(input=fc2, bias=fc2_bias, type='relu')
+        fc2_dropout = cv.layer_dropout(input=fc2_activate, keep_probability=dropout)
 
-# initialize weights for output layer of network
-with tf.name_scope('FC3_TENSORS'):
-    fc3_shape = [fc2_num_weights, num_outputs]
-    stdev5 = math.sqrt(2.0 / fc2_num_weights)
-    fc3_weight = cv.generate_weights(fc3_shape, type='custom',
-                                         function=tf.random_normal(fc3_shape, mean=0.00, stddev=stdev5))
+    # initialize weights for output layer of network
+    with tf.name_scope('FC3_TENSORS'):
+        fc3_shape = [fc2_num_weights, num_outputs]
+        stdev5 = math.sqrt(2.0 / fc2_num_weights)
+        fc3_weight = cv.generate_weights(fc3_shape, type='custom',
+                                             function=tf.random_normal(fc3_shape, mean=0.00, stddev=stdev5))
 
-# compute output of the network using fully connected layer 2 with no activation function or biases
-with tf.name_scope('FC3_LAYER'):
-    fc_output = cv.layer_fc(input=fc2_dropout, weights=fc3_weight)
-    tf.add_to_collection('fc_output', fc_output)
+    # compute output of the network using fully connected layer 2 with no activation function or biases
+    with tf.name_scope('FC3_LAYER'):
+        fc_output = cv.layer_fc(input=fc2_dropout, weights=fc3_weight, name='fc_output')
+        tf.add_to_collection('fc_output', fc_output)
 
-# cost function for the network
-with tf.name_scope('COST'):
-    cost = cv.network_cost(predicted_vals=fc_output, known_vals=outputs_shaped, type='l2')
-    tf.summary.scalar("COST", cost)
-    tf.add_to_collection('cost', cost)
+    # cost function for the network
+    with tf.name_scope('COST'):
+        cost = cv.network_cost(predicted_vals=fc_output, known_vals=outputs_shaped, type='l2')
+        cost = tf.identity(cost, name='testcost')
+        tf.summary.scalar("COST", cost)
+        tf.add_to_collection('cost', cost)
 
-with tf.name_scope('OPTIMIZE'):
-    optimize = cv.network_optimize(cost, learn_rate=learning_rate, optimizer='adam')
+    with tf.name_scope('OPTIMIZE'):
+        optimize = cv.network_optimize(cost, learn_rate=learning_rate, optimizer='adam')
 
-with tf.name_scope('VISUALS'):
-    tf.summary.histogram('CONV1_WEIGHTS', cl1_weight)
-    tf.summary.histogram('CONV1_BIASES', cl1_bias)
-    tf.summary.histogram('CONV1_ACTIVATIONS', cl1_activate)
-    tf.summary.histogram('FC1_WEIGHTS', fc1_weight)
-    tf.summary.histogram('FC1_BIASES', fc1_bias)
-    tf.summary.histogram('FC1_ACTIVATIONS', fc1_activate)
-    tf.summary.histogram('FC2_WEIGHTS', fc2_weight)
-    tf.summary.histogram('FC2_BIASES', fc2_bias)
-    tf.summary.histogram('FC2_ACTIVATIONS', fc2_activate)
-    tf.summary.histogram('FC3_WEIGHTS', fc3_weight)
-    tf.summary.histogram('FC3_ACTIVATIONS', fc_output)
+    with tf.name_scope('VISUALS'):
+        tf.summary.histogram('CONV1_WEIGHTS', cl1_weight)
+        tf.summary.histogram('CONV1_BIASES', cl1_bias)
+        tf.summary.histogram('CONV1_ACTIVATIONS', cl1_activate)
+        tf.summary.histogram('FC1_WEIGHTS', fc1_weight)
+        tf.summary.histogram('FC1_BIASES', fc1_bias)
+        tf.summary.histogram('FC1_ACTIVATIONS', fc1_activate)
+        tf.summary.histogram('FC2_WEIGHTS', fc2_weight)
+        tf.summary.histogram('FC2_BIASES', fc2_bias)
+        tf.summary.histogram('FC2_ACTIVATIONS', fc2_activate)
+        tf.summary.histogram('FC3_WEIGHTS', fc3_weight)
+        tf.summary.histogram('FC3_ACTIVATIONS', fc_output)
+
+def freeze_model(parameters):
+    model_dir = parameters['MODEL_LOC']
+    output_ops = 'COST/testcost'
+    frozen_dir = model_dir+'frozen.pb'
+    saver = tf.train.Saver()
+    #saver = tf.train.import_meta_graph(model_dir+'meta', clear_devices=True)
+    graph = tf.get_default_graph()
+    input_graph_def = graph.as_graph_def()
+    with tf.Session() as sess:
+        saver.restore(sess, model_dir+'save.ckpt')
+        output_graph_def = tf.graph_util.convert_variables_to_constants(sess, input_graph_def, output_ops.split(','))
+        with open(frozen_dir, 'wb') as f:
+            f.write(output_graph_def.SerializeToString())
 
 
 def train_neural_network(parameters):
@@ -498,5 +527,6 @@ def train_neural_network(parameters):
         session.close()
         print('Training stage 2 finished in ' + execute_time + 's, model saved in ' + save_path)
 
-if __name__ == '__MAIN__':
+if __name__ == '__main__':
     train_neural_network(parameters)
+    freeze_model(parameters)

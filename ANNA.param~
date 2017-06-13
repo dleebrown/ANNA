@@ -7,14 +7,14 @@ NUM_PX: 1001
 # shape of the first convolutional layer [1, kernel_width (px), 1, num_kernels]
 CONV1_SHAPE: 1, 45, 1, 10
 # output dimensions of each fully-connected layer
-FC1_OUTDIM: 16
-FC2_OUTDIM: 16
+FC1_OUTDIM: 256
+FC2_OUTDIM: 256
 NUM_OUTS: 5
 
 # learning rate for first stage of training
 LEARN_RATE1: 5e-5
 # number of iterations for first stage of training
-NUM_TRAIN_ITERS1: 100
+NUM_TRAIN_ITERS1: 10000
 # batch size for first stage of training
 BATCH_SIZE1: 100
 # probability to retain node during first stage of training
@@ -25,7 +25,7 @@ DO_TRAIN2: YES
 # learning rate for second stage of training
 LEARN_RATE2: 5e-5
 # number of iterations for second stage of training
-NUM_TRAIN_ITERS2: 5000
+NUM_TRAIN_ITERS2: 1000
 # batch size for second stage of training
 BATCH_SIZE2: 100
 # probability to retain node during second stage of training
@@ -79,7 +79,7 @@ PREPROCESS_XVAL: YES
 # early stopping toggle (will use the xval set if specified, otherwise will use the current batch)
 EARLY_STOP: YES
 # number of sampling intervals cost must improve within
-ES_SAMPLE: 1
+ES_SAMPLE: 50
 
 ######################
 # TESTING PARAMETERS #
@@ -99,6 +99,9 @@ REL_CONT_E_TEST: -0.010, 0.010
 SN_RANGE_TEST: 200.0, 250.0
 # template containing relative signal-to-noise profile
 SN_TEMPLATE_TEST: sn.robo.template
+
+# number of threads to enqueue test data
+TEST_THREADS: 1
 
 
 ########################

@@ -119,8 +119,8 @@ def layer_flatten(input):
     output=tf.reshape(input,[-1,nparams])
     return output,nparams
 
-def layer_fc(input,weights):
-    output=tf.matmul(input,weights)
+def layer_fc(input,weights,name):
+    output=tf.matmul(input,weights, name=str(name))
     return output
 
 ### OPTIMIZATION FUNCTIONS ###
