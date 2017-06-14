@@ -1,52 +1,51 @@
+#######################
+# TRAINING PARAMETERS #
+#######################
+
 # number of pixels in each spectrum
 NUM_PX: 1001
 # shape of the first convolutional layer [1, kernel_width (px), 1, num_kernels]
 CONV1_SHAPE: 1, 45, 1, 10
 # output dimensions of each fully-connected layer
-FC1_OUTDIM: 16
-FC2_OUTDIM: 16
+FC1_OUTDIM: 256
+FC2_OUTDIM: 256
 NUM_OUTS: 5
 
 # learning rate for first stage of training
 LEARN_RATE1: 5e-5
 # number of iterations for first stage of training
-NUM_TRAIN_ITERS1: 1000
+NUM_TRAIN_ITERS1: 125000
 # batch size for first stage of training
 BATCH_SIZE1: 100
 # probability to retain node during first stage of training
-KEEP_PROB1: 0.9
+KEEP_PROB1: 0.8
 
 # flag to control second stage (YES/NO)
 DO_TRAIN2: YES
 # learning rate for second stage of training
-LEARN_RATE2: 5e-5
+LEARN_RATE2: 1e-6
 # number of iterations for second stage of training
-NUM_TRAIN_ITERS2: 5000
+NUM_TRAIN_ITERS2: 25000
 # batch size for second stage of training
 BATCH_SIZE2: 100
 # probability to retain node during second stage of training
 KEEP_PROB2: 1.0
 
+# preprocess training data with random offsets given below
+PREPROCESS_TRAIN: YES
 # relative continuum error bounds to sample between during training
 REL_CONT_E_TRAIN: -0.010, 0.010
 # signal-to-noise bounds to sample between during training
 SN_RANGE_TRAIN: 200.0, 250.0
 # template containing relative signal-to-noise profile
 SN_TEMPLATE: sn.robo.template
-
-# relative continuum error bounds to sample between during testing
-REL_CONT_E_TEST: -0.010, 0.010
-# signal-to-noise bounds to sample between during testing
-SN_RANGE_TEST: 200.0, 250.0
 # number of examples to fetch and preprocess for training at once
 NUM_FETCH: 10000
 
 # binary file containing training data
 TRAINING_DATA: ../../ANNA_CNN/110ktrain_5ktest/allspec_train_200_600
-# binary file containing testing data
-TESTING_DATA: allspec_test_200_600
 # folder to save/load model
-SAVE_LOC: ../repo_saved_models/model_200_250_200_600/save.ckpt
+SAVE_LOC: ../repo_saved_models/model_200_250_200_600/
 
 # minimum values of [temp, grav, [fe/h], vt, rotv]
 MIN_PARAMS: 4000.0, 2.7, -0.5, 0.0, 0.0
@@ -54,7 +53,7 @@ MIN_PARAMS: 4000.0, 2.7, -0.5, 0.0, 0.0
 MAX_PARAMS: 7000.0, 4.8, 0.2, 3.0, 90.0
 
 # interval (in batches) between printing cost and writing to logfiles
-SAMPLE_INTERVAL: 25
+SAMPLE_INTERVAL: 100
 # number of preprocessing threads
 PP_THREADS: 1
 # preprocessing max queue depth
@@ -74,11 +73,40 @@ XVAL_DATA: allspec_test_200_600
 XVAL_SIZE: 2000
 # number of threads to spawn for cross-validation construction
 XV_THREADS: 1
+# preprocess cross-validation set using training preprocessing parameters
+PREPROCESS_XVAL: YES
 
 # early stopping toggle (will use the xval set if specified, otherwise will use the current batch)
 EARLY_STOP: YES
 # number of sampling intervals cost must improve within
-ES_SAMPLE: 1
+ES_SAMPLE: 150
+
+######################
+# TESTING PARAMETERS #
+######################
+
+# location with meta and .ckpt files to load
+MODEL_LOC: ../repo_saved_models/model_200_250_200_600/
+
+# location to save summary file
+TEST_SAVE_LOC: ../repo_logs/
+
+# binary file containing testing data
+TESTING_DATA: allspec_test_200_600
+
+# preprocess training data with random offsets given below
+PREPROCESS_TEST: YES
+# relative continuum error bounds to sample between during training
+REL_CONT_E_TEST: -0.010, 0.010
+# signal-to-noise bounds to sample between during training
+SN_RANGE_TEST: 200.0, 250.0
+# template containing relative signal-to-noise profile
+SN_TEMPLATE_TEST: sn.robo.template
+
+
+########################
+# INFERENCE PARAMETERS #
+########################
 
 
 
