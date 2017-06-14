@@ -1,5 +1,4 @@
 import tensorflow as tf
-print(tf.__version__)
 import convnet2 as cv
 import numpy as np
 import pandas as pd
@@ -190,6 +189,26 @@ def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_valu
                     print('Input queue closed, exiting training')
 
 
+# freezes a tensorflow model to be reloaded later
+def freeze_model(parameters):
+    model_dir = parameters['MODEL_LOC']
+    # the op to save - this results in all the tboard options being discarded from the frozen graph
+    output_op = 'COST/cost'
+    frozen_dir = model_dir+'frozen.model'
+    saver = tf.train.Saver()
+    graph = tf.get_default_graph()
+    input_graph_def = graph.as_graph_def()
+    session = tf.Session()
+    # restore the trained model
+    saver.restore(session, model_dir+'save.ckpt')
+    # convert all useful variables to constants
+    output_graph_def = tf.graph_util.convert_variables_to_constants(session, input_graph_def, [output_op])
+    # open the specified file and write the model
+    with open(frozen_dir, 'wb') as frozen_model:
+        frozen_model.write(output_graph_def.SerializeToString())
+    print('Model frozen as '+frozen_dir)
+
+# read in the parameter file
 parameters = read_param_file('ANNA.param')
 
 # the network architecture, only called if this file is run as main
@@ -208,12 +227,12 @@ if __name__ == '__main__':
         learning_rate = tf.placeholder(tf.float32, name='learning_rate')
         dropout = tf.placeholder(tf.float32, name='dropout')
         pp_depth = int(parameters['MAX_PP_DEPTH'])
+        # adds various variables to collection in order to recall later
         tf.add_to_collection('learning_rate', learning_rate)
         tf.add_to_collection('dropout', dropout)
         tf.add_to_collection('batch_size', batch_size)
         tf.add_to_collection('image_data', image_data)
         tf.add_to_collection('known_params', known_params)
-
 
     # the input queue - handles building random batches and contains wrapper for preprocessing
     with tf.name_scope('INPUT_QUEUE'):
@@ -233,10 +252,12 @@ if __name__ == '__main__':
         select_queue = tf.placeholder(tf.int32, [])
         master_queue = tf.QueueBase.from_list(select_queue, [input_queue, xval_queue])
         batch_outputs, batch_pixels = input_queue.dequeue_many(batch_size)
-        batch_pixels = tf.identity(batch_pixels, name='testpx')
-        batch_outputs = tf.identity(batch_outputs, name='testoutput')
+        # add some redundant identity ops to add in naming (convnet2 doesn't support names)
+        batch_pixels = tf.identity(batch_pixels, name='px')
+        batch_outputs = tf.identity(batch_outputs, name='output')
         pixels_shaped = tf.reshape(batch_pixels, [batch_size, 1, num_px, 1])
         outputs_shaped = tf.reshape(batch_outputs, [batch_size, num_outputs])
+        # add more variables to collection
         tf.add_to_collection('select_queue', select_queue)
         tf.add_to_collection('pixels_shaped', pixels_shaped)
 
@@ -293,44 +314,35 @@ if __name__ == '__main__':
     # compute output of the network using fully connected layer 2 with no activation function or biases
     with tf.name_scope('FC3_LAYER'):
         fc_output = cv.layer_fc(input=fc2_dropout, weights=fc3_weight, name='fc_output')
+        # add this to collection for inference
         tf.add_to_collection('fc_output', fc_output)
 
     # cost function for the network
     with tf.name_scope('COST'):
         cost = cv.network_cost(predicted_vals=fc_output, known_vals=outputs_shaped, type='l2')
-        cost = tf.identity(cost, name='testcost')
-        tf.summary.scalar("COST", cost)
+        # again use identity op to name cost
+        cost = tf.identity(cost, name='cost')
+        # add to tboard and collection
+        batch_cost_sum = tf.summary.scalar("BATCH COST", cost)
+        xval_cost_sum = tf.summary.scalar("XVAL COST", cost)
         tf.add_to_collection('cost', cost)
 
     with tf.name_scope('OPTIMIZE'):
         optimize = cv.network_optimize(cost, learn_rate=learning_rate, optimizer='adam')
 
     with tf.name_scope('VISUALS'):
-        tf.summary.histogram('CONV1_WEIGHTS', cl1_weight)
-        tf.summary.histogram('CONV1_BIASES', cl1_bias)
-        tf.summary.histogram('CONV1_ACTIVATIONS', cl1_activate)
-        tf.summary.histogram('FC1_WEIGHTS', fc1_weight)
-        tf.summary.histogram('FC1_BIASES', fc1_bias)
-        tf.summary.histogram('FC1_ACTIVATIONS', fc1_activate)
-        tf.summary.histogram('FC2_WEIGHTS', fc2_weight)
-        tf.summary.histogram('FC2_BIASES', fc2_bias)
-        tf.summary.histogram('FC2_ACTIVATIONS', fc2_activate)
-        tf.summary.histogram('FC3_WEIGHTS', fc3_weight)
-        tf.summary.histogram('FC3_ACTIVATIONS', fc_output)
-
-def freeze_model(parameters):
-    model_dir = parameters['MODEL_LOC']
-    output_ops = 'COST/testcost'
-    frozen_dir = model_dir+'frozen.pb'
-    saver = tf.train.Saver()
-    #saver = tf.train.import_meta_graph(model_dir+'meta', clear_devices=True)
-    graph = tf.get_default_graph()
-    input_graph_def = graph.as_graph_def()
-    with tf.Session() as sess:
-        saver.restore(sess, model_dir+'save.ckpt')
-        output_graph_def = tf.graph_util.convert_variables_to_constants(sess, input_graph_def, output_ops.split(','))
-        with open(frozen_dir, 'wb') as f:
-            f.write(output_graph_def.SerializeToString())
+        # add in various histograms to the summary for tboard output
+        cv1w_sum = tf.summary.histogram('CONV1_WEIGHTS', cl1_weight)
+        cv1b_sum = tf.summary.histogram('CONV1_BIASES', cl1_bias)
+        cv1a_sum = tf.summary.histogram('CONV1_ACTIVATIONS', cl1_activate)
+        fc1w_sum = tf.summary.histogram('FC1_WEIGHTS', fc1_weight)
+        fc1b_sum = tf.summary.histogram('FC1_BIASES', fc1_bias)
+        fc1a_sum = tf.summary.histogram('FC1_ACTIVATIONS', fc1_activate)
+        fc2w_sum = tf.summary.histogram('FC2_WEIGHTS', fc2_weight)
+        fc2b_sum = tf.summary.histogram('FC2_BIASES', fc2_bias)
+        fc2a_sum = tf.summary.histogram('FC2_ACTIVATIONS', fc2_activate)
+        fc3w_sum = tf.summary.histogram('FC3_WEIGHTS', fc3_weight)
+        fc3a_sum = tf.summary.histogram('FC3_ACTIVATIONS', fc_output)
 
 
 def train_neural_network(parameters):
@@ -347,7 +359,6 @@ def train_neural_network(parameters):
         interp_sn = interpolate_sn(sn_template_file, wavelengths)
     else:
         sn_range, y_off_range, interp_sn = 0, 0, 0
-        sn_template_file = 'none'
     fetch_size = int(parameters['NUM_FETCH'])
     bsize_train1 = int(parameters['BATCH_SIZE1'])
     # if separate xval set specified, read that in
@@ -362,7 +373,7 @@ def train_neural_network(parameters):
             y_off_range = np.fromstring(parameters['REL_CONT_E_TRAIN'], sep=', ', dtype=np.float32)
 
     # subloop definition to build a separate queue for xval data if it exists and calculate the cost
-    def xval_subloop(learn_rate, bsize):
+    def xval_subloop(learn_rate, bsize, step, inherit_iter_count):
         xvcoordinator = tf.train.Coordinator()
         randomize = False
         # if xval preprocessing desired, flip the correct flat in add_to_queue
@@ -380,7 +391,8 @@ def train_neural_network(parameters):
             for i in xval_threads:
                 i.start()
         feed_dict_xval = {learning_rate: learn_rate, dropout: 1.0, batch_size: bsize, select_queue: 1}
-        xval_cost = session.run(cost, feed_dict=feed_dict_xval)
+        xval_cost, xval_sum = session.run([cost, xval_cost_sum], feed_dict=feed_dict_xval)
+        writer.add_summary(xval_sum, step + inherit_iter_count)
         # close the queue and join threads
         xvcoordinator.request_stop()
         session.run(xval_queue.close(cancel_pending_enqueues=True))
@@ -431,7 +443,7 @@ def train_neural_network(parameters):
                 # first iteration will store the cost under best_cost for xval if xval specified, current batch if not
                 if i == 0:
                     if parameters['TRAINING_XVAL'] == 'YES':
-                        init_cost = xval_subloop(learn_rate, xv_size)
+                        init_cost = xval_subloop(learn_rate, xv_size, i, inherit_iter_count)
                         best_cost = init_cost
                         print('Initial xval cost: '+str(round(init_cost, 2)))
                         session.run(optimize, feed_dict=feed_dict_train)
@@ -445,7 +457,7 @@ def train_neural_network(parameters):
                     test_cost = session.run(cost, feed_dict=feed_dict_train)
                     session.run(optimize, feed_dict=feed_dict_train)
                     if parameters['TRAINING_XVAL'] == 'YES':
-                        xvcost = xval_subloop(learn_rate, xv_size)
+                        xvcost = xval_subloop(learn_rate, xv_size, i, inherit_iter_count)
                         print('done with batch '+str(int(i+1))+'/'+str(iterations)+', current cost: '
                           + str(round(test_cost, 2))+', xval cost: '+str(xvcost))
                     else:
@@ -503,13 +515,13 @@ def train_neural_network(parameters):
     # if tboard output desired start a writer
     if parameters['TBOARD_OUTPUT'] == 'YES':
         writer = tf.summary.FileWriter(parameters['LOG_LOC']+'logs', session.graph)
-        merged_summaries = tf.summary.merge_all()
+        merged_summaries = tf.summary.merge([cv1w_sum, cv1b_sum, cv1a_sum, fc1w_sum, fc1b_sum, fc1a_sum, fc2w_sum,
+                                             fc2b_sum, fc2a_sum, fc3w_sum, fc3a_sum, batch_cost_sum])
     # train the network on input training data
     execute_time, finished_iters = train_loop(int(parameters['NUM_TRAIN_ITERS1']), float(parameters['LEARN_RATE1']),
                                               float(parameters['KEEP_PROB1']), bsize_train1, inherit_iter_count=0)
     # save model and the graph and close session
     save_path = saver.save(session, model_dir+'save.ckpt')
-    saver.export_meta_graph(model_dir+'meta')
     session.close()
     print('Training stage 1 finished in '+execute_time+'s, model and graph saved in '+save_path)
     if parameters['DO_TRAIN2'] == 'YES':
@@ -526,7 +538,8 @@ def train_neural_network(parameters):
         save_path = saver.save(session, model_dir)
         session.close()
         print('Training stage 2 finished in ' + execute_time + 's, model saved in ' + save_path)
+    # freeze the model and save it to disk after training
+    freeze_model(parameters)
 
 if __name__ == '__main__':
     train_neural_network(parameters)
-    freeze_model(parameters)

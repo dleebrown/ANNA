@@ -14,18 +14,18 @@ NUM_OUTS: 5
 # learning rate for first stage of training
 LEARN_RATE1: 5e-5
 # number of iterations for first stage of training
-NUM_TRAIN_ITERS1: 10000
+NUM_TRAIN_ITERS1: 125000
 # batch size for first stage of training
 BATCH_SIZE1: 100
 # probability to retain node during first stage of training
-KEEP_PROB1: 0.9
+KEEP_PROB1: 0.8
 
 # flag to control second stage (YES/NO)
 DO_TRAIN2: YES
 # learning rate for second stage of training
-LEARN_RATE2: 5e-5
+LEARN_RATE2: 1e-6
 # number of iterations for second stage of training
-NUM_TRAIN_ITERS2: 1000
+NUM_TRAIN_ITERS2: 25000
 # batch size for second stage of training
 BATCH_SIZE2: 100
 # probability to retain node during second stage of training
@@ -53,7 +53,7 @@ MIN_PARAMS: 4000.0, 2.7, -0.5, 0.0, 0.0
 MAX_PARAMS: 7000.0, 4.8, 0.2, 3.0, 90.0
 
 # interval (in batches) between printing cost and writing to logfiles
-SAMPLE_INTERVAL: 25
+SAMPLE_INTERVAL: 100
 # number of preprocessing threads
 PP_THREADS: 1
 # preprocessing max queue depth
@@ -88,6 +88,9 @@ ES_SAMPLE: 50
 # location with meta and .ckpt files to load
 MODEL_LOC: ../repo_saved_models/model_200_250_200_600/
 
+# location to save summary file
+TEST_SAVE_LOC: ../repo_logs/
+
 # binary file containing testing data
 TESTING_DATA: allspec_test_200_600
 
@@ -99,9 +102,6 @@ REL_CONT_E_TEST: -0.010, 0.010
 SN_RANGE_TEST: 200.0, 250.0
 # template containing relative signal-to-noise profile
 SN_TEMPLATE_TEST: sn.robo.template
-
-# number of threads to enqueue test data
-TEST_THREADS: 1
 
 
 ########################
