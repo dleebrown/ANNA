@@ -3,6 +3,7 @@ import convnet2 as cv
 import numpy as np
 from array import array
 import readmultispec as rmspec
+from scipy import interpolate as ip
 from ANNA_train import interpolate_sn, read_param_file, read_known_binary
 
 """This is the inference program. Assumes a model has already been trained and frozen, and runs 
@@ -28,6 +29,28 @@ def load_frozen_model_infer(parameters, input_px):
     model_file.close()
     tf.import_graph_def(load_graph, input_map={"MASTER_QUEUE/px:0": input_px}, name='infer')
     print('frozen model loaded successfully from '+model_dir)
+
+
+# reads in a multispec file and parses it, returning 2 arrays - ids and fluxes interpolated on wavelength grid
+def read_multispec_file(parameters):
+    image_name = parameters['MS_FITS_IMAGE']
+    wavelength_template = parameters['WAVE_TEMPLATE']
+    wavelength_grid = np.loadtxt(wavelength_template)[:, 0]
+    image = rmspec.readmultispec(image_name)
+    wavelengths = image['wavelen']
+    flux = image['flux']
+    # for now just make ids a np arange until I figure out how to hook the WOCS IDs
+    num_stars = len(flux)
+    ids = np.arange(num_stars)
+    ids = np.reshape(ids, (num_stars, 1))
+    output_array = np.zeros((num_stars, np.size(wavelength_grid)), dtype=np.float32)
+    for entry in range(num_stars):
+        current_fluxes = flux[entry]
+        current_wavelengths = wavelengths[entry]
+        function = ip.interp1d(current_wavelengths, current_fluxes, kind='linear')
+        interpolated_spectrum = function(wavelength_grid)
+        output_array[entry, :] = interpolated_spectrum
+    return ids, output_array
 
 
 # this is just a wrapper to slice input binaries of the form used for training - only used in debug mode
@@ -60,7 +83,7 @@ def save_output(parameters, star_names, normed_inferred, minvals, maxvals):
     unnormed_inferred = unnormalize_parameters(normed_inferred, minvals, maxvals)
     concat_results = np.concatenate((star_names, unnormed_inferred), axis=1)
     np.savetxt(save_file, concat_results, delimiter=',',
-               header='star_id,infer_temp,infer_grav,infer_met,infer_vt,infer_rot')
+               header='fits_row,infer_temp,infer_grav,infer_met,infer_vt,infer_rot')
     print('Inference summary output in '+save_file)
 
 
@@ -77,9 +100,9 @@ def run_inference(parameters):
         # set to read in the entire test set when running inference in debug mode
         total_num_stars = np.size(normed_outputs[:, 0])
         star_ids, spectra, _ = debug_mode_input_handler(normed_outputs, pix_values)
-    else:
-        # this would be where fits io would occur
-        return
+    elif parameters['SINGLE_MS_MODE'] == 'YES':
+        star_ids, spectra = read_multispec_file(parameters)
+        total_num_stars = np.size(star_ids)
     # define a few new ops to use as inputs instead of a queue
     with tf.Graph().as_default() as graph:
         input_px = tf.placeholder(tf.float32, shape=[None, num_px], name='input_px')
