@@ -14,8 +14,8 @@ parameters = read_param_file('ANNA.param')
 
 
 # loads a frozen tensorflow model, and remaps the inputs originally fed from a queue to be placeholders
-def load_frozen_model(parameters, input_px, input_known):
-    model_dir = parameters['MODEL_LOC']
+def load_frozen_model_test(parameters, input_px, input_known):
+    model_dir = parameters['TEST_MODEL_LOC']
     frozen_model = model_dir+'frozen.model'
     model_file = open(frozen_model, 'rb')
     load_graph = tf.GraphDef()
@@ -85,7 +85,7 @@ def test_frozen_model(parameters):
     maxvals = np.fromstring(parameters['MAX_PARAMS'], sep=', ', dtype=np.float32)
     num_outputs = int(parameters['NUM_OUTS'])
     num_px = int(parameters['NUM_PX'])
-    # read in the training data
+    # read in the test data
     wavelengths, normed_outputs, pix_values = \
         read_known_binary(parameters['TESTING_DATA'], parameters, minvals, maxvals)
     # set to read in the entire test set when running inference and calculating cost
@@ -106,7 +106,7 @@ def test_frozen_model(parameters):
     with tf.Graph().as_default() as graph:
         input_px = tf.placeholder(tf.float32, shape=[None, num_px], name='input_px')
         input_known = tf.placeholder(tf.float32, shape=[None, num_outputs], name='input_known')
-        load_frozen_model(parameters, input_px, input_known)
+        load_frozen_model_test(parameters, input_px, input_known)
     # snag the ops needed to actually run inference and cost
     cost = graph.get_tensor_by_name('test/COST/cost:0')
     outputs = graph.get_tensor_by_name('test/FC3_LAYER/fc_output:0')

@@ -43,7 +43,7 @@ SN_TEMPLATE: sn.robo.template
 NUM_FETCH: 10000
 
 # binary file containing training data
-TRAINING_DATA: ../../ANNA_CNN/110ktrain_5ktest/allspec_train_200_600
+TRAINING_DATA: ../repo_data/allspec_train_200_600
 # folder to save/load model
 SAVE_LOC: ../repo_saved_models/model_200_250_200_600/
 
@@ -79,20 +79,20 @@ PREPROCESS_XVAL: YES
 # early stopping toggle (will use the xval set if specified, otherwise will use the current batch)
 EARLY_STOP: YES
 # number of sampling intervals cost must improve within
-ES_SAMPLE: 50
+ES_SAMPLE: 150
 
 ######################
 # TESTING PARAMETERS #
 ######################
 
-# location with meta and .ckpt files to load
-MODEL_LOC: ../repo_saved_models/model_200_250_200_600/
+# location frozen model to load
+TEST_MODEL_LOC: ../repo_saved_models/model_200_250_200_600/
 
 # location to save summary file
 TEST_SAVE_LOC: ../repo_logs/
 
 # binary file containing testing data
-TESTING_DATA: allspec_test_200_600
+TESTING_DATA: ../repo_data/allspec_test_200_600
 
 # preprocess training data with random offsets given below
 PREPROCESS_TEST: YES
@@ -108,6 +108,26 @@ SN_TEMPLATE_TEST: sn.robo.template
 # INFERENCE PARAMETERS #
 ########################
 
+# debug mode uses binary inputs of the same type as testing and training
+DEBUG_MODE: YES
+
+# input binary data to use for debug mode
+DEBUG_DATA: ../repo_data/allspec_test_200_600
+
+# toggle single multispec image mode
+SINGLE_MS_MODE: NO
+
+# multispec image to run inference on
+MS_FITS_IMAGE: ../repo_data/hyadestot.cf.bin.fits
+
+# text file with spectrum [wavelength, flux] to use as interpolation template
+WAVE_TEMPLATE: ../repo_data/wavelength.template
+
+# location frozen model to load
+INFER_MODEL_LOC: ../repo_saved_models/model_200_250_200_600/
+
+# location to save summary file
+INFER_SAVE_LOC: ../repo_logs/
 
 
 
