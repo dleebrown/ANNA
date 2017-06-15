@@ -1,1 +1,2 @@
-# ANNA
+# ANNA - Artificial Neural Network Abundances
+Work in progress code to automatically parameterize stellar spectra using a convolutional neural network. Designed to be trained on synthetic stellar spectra with optional data augmentation including continuum error, radial velocity, and instrumental signal-to-noise profile. After training, ANNA infers effective temperature, surface gravity, [Fe/H], microturbulent velocity, and rotational velocity. 
