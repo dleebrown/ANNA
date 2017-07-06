@@ -1,14 +1,12 @@
 import tensorflow as tf
 import convnet2 as cv
 import numpy as np
-import pandas as pd
 import time
 import threading
 from array import array
 import math
 import random
 from tensorflow.python.client import timeline
-
 
 def read_param_file(paramfile):
     """reads in a parameter file containing all the info needed to execute tensorflow session (training or inference)
@@ -191,7 +189,7 @@ def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_valu
 
 # freezes a tensorflow model to be reloaded later
 def freeze_model(parameters):
-    model_dir = parameters['MODEL_LOC']
+    model_dir = parameters['SAVE_LOC']
     # the op to save - this results in all the tboard options being discarded from the frozen graph
     output_op = 'COST/cost'
     frozen_dir = model_dir+'frozen.model'
@@ -488,7 +486,6 @@ def train_neural_network(parameters):
             if early_stop_counter == early_stop_threshold or (i == (iterations-1)
                                                               and early_stop_counter < (early_stop_threshold+1)):
                 # if end of training reached, print a message and optionally save timeline
-                print('Early stop threshold or specified iterations met')
                 if parameters['TIMELINE_OUTPUT'] == 'YES':
                     # if timeline desired, prints to json file for most recent iteration
                     fetched_timeline = timeline.Timeline(run_metadata.step_stats)
@@ -496,6 +493,7 @@ def train_neural_network(parameters):
                     with open(parameters['LOG_LOC'] + 'timeline_01.json', 'w') as f:
                         f.write(chrome_trace)
                     print('Timeline saved as timeline_01.json in folder ' + parameters['LOG_LOC'])
+                print('Early stop threshold or specified iterations met')
                 early_stop_counter += 1
         # close the preprocessing queues and join threads
         coordinator.request_stop()
@@ -529,8 +527,13 @@ def train_neural_network(parameters):
         bsize_train2 = int(parameters['BATCH_SIZE2'])
         print('Training stage 2 beginning, loading model...')
         session = tf.Session()
+        options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
         saver = tf.train.Saver()
         saver.restore(session, model_dir+'save.ckpt')
+        if parameters['TBOARD_OUTPUT'] == 'YES':
+            writer = tf.summary.FileWriter(parameters['LOG_LOC'] + 'logs', session.graph)
+            merged_summaries = tf.summary.merge([cv1w_sum, cv1b_sum, cv1a_sum, fc1w_sum, fc1b_sum, fc1a_sum, fc2w_sum,
+                                                 fc2b_sum, fc2a_sum, fc3w_sum, fc3a_sum, batch_cost_sum])
         print('Model loaded, beginning training...')
         execute_time, _ = train_loop(int(parameters['NUM_TRAIN_ITERS2']), float(parameters['LEARN_RATE2']),
                                   float(parameters['KEEP_PROB2']), bsize_train2,

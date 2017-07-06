@@ -83,7 +83,7 @@ def save_output(parameters, star_names, normed_inferred, minvals, maxvals):
     unnormed_inferred = unnormalize_parameters(normed_inferred, minvals, maxvals)
     concat_results = np.concatenate((star_names, unnormed_inferred), axis=1)
     np.savetxt(save_file, concat_results, delimiter=',',
-               header='fits_row,infer_temp,infer_grav,infer_met,infer_vt,infer_rot')
+               header='star_id,infer_temp,infer_grav,infer_met,infer_vt,infer_rot')
     print('Inference summary output in '+save_file)
 
 
