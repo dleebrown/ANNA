@@ -7,14 +7,14 @@ NUM_PX: 1001
 # shape of the first convolutional layer [1, kernel_width (px), 1, num_kernels]
 CONV1_SHAPE: 1, 45, 1, 10
 # output dimensions of each fully-connected layer
-FC1_OUTDIM: 512
-FC2_OUTDIM: 512
+FC1_OUTDIM: 128
+FC2_OUTDIM: 128
 NUM_OUTS: 5
 
 # learning rate for first stage of training
 LEARN_RATE1: 5e-5
 # number of iterations for first stage of training
-NUM_TRAIN_ITERS1: 100
+NUM_TRAIN_ITERS1: 13000
 # batch size for first stage of training
 BATCH_SIZE1: 100
 # probability to retain node during first stage of training
@@ -25,7 +25,7 @@ DO_TRAIN2: YES
 # learning rate for second stage of training
 LEARN_RATE2: 1e-6
 # number of iterations for second stage of training
-NUM_TRAIN_ITERS2: 100
+NUM_TRAIN_ITERS2: 2000
 # batch size for second stage of training
 BATCH_SIZE2: 100
 # probability to retain node during second stage of training
@@ -40,12 +40,12 @@ SN_RANGE_TRAIN: 175.0, 250.0
 # template containing relative signal-to-noise profile
 SN_TEMPLATE: sn.robo.template
 # number of examples to fetch and preprocess for training at once
-NUM_FETCH: 10000
+NUM_FETCH: 1000
 
 # binary file containing training data
-TRAINING_DATA: ../repo_data/allspec_train_200_600
+TRAINING_DATA: allspec_test_200_600
 # folder to save/load model
-SAVE_LOC: ../repo_saved_models/model_200_250_200_600/
+SAVE_LOC: ../repo_saved_models/example_model/
 
 # minimum values of [temp, grav, [fe/h], vt, rotv]
 MIN_PARAMS: 4000.0, 2.7, -0.5, 0.0, 0.0
@@ -53,7 +53,7 @@ MIN_PARAMS: 4000.0, 2.7, -0.5, 0.0, 0.0
 MAX_PARAMS: 7000.0, 4.8, 0.2, 3.0, 40.0
 
 # interval (in batches) between printing cost and writing to logfiles
-SAMPLE_INTERVAL: 100
+SAMPLE_INTERVAL: 50
 # number of preprocessing threads
 PP_THREADS: 1
 # preprocessing max queue depth
@@ -61,16 +61,16 @@ MAX_PP_DEPTH: 200000
 # folder to save log files
 LOG_LOC: ../repo_logs/
 # output a .json timeline indicating various execution times (YES/NO)
-TIMELINE_OUTPUT: YES
+TIMELINE_OUTPUT: NO
 # log weight, cost, and graph information in the log directory for tensorboard
 TBOARD_OUTPUT: YES
 
 # perform cross-validation during training
 TRAINING_XVAL: YES
 # cross-validation dataset location (binary)
-XVAL_DATA: ../repo_data/allspec_test_200_600
+XVAL_DATA: allspec_test_200_600
 # size of cross-validation set to construct (same set every time)
-XVAL_SIZE: 2000
+XVAL_SIZE: 500
 # number of threads to spawn for cross-validation construction
 XV_THREADS: 1
 # preprocess cross-validation set using training preprocessing parameters
@@ -79,20 +79,20 @@ PREPROCESS_XVAL: YES
 # early stopping toggle (will use the xval set if specified, otherwise will use the current batch)
 EARLY_STOP: YES
 # number of sampling intervals cost must improve within
-ES_SAMPLE: 150
+ES_SAMPLE: 100
 
 ######################
 # TESTING PARAMETERS #
 ######################
 
 # location frozen model to load
-TEST_MODEL_LOC: ../repo_saved_models/model_200_250_200_600/
+TEST_MODEL_LOC: ../repo_saved_models/example_model/
 
 # location to save summary file
 TEST_SAVE_LOC: ../repo_logs/
 
 # binary file containing testing data
-TESTING_DATA: ../repo_data/allspec_test_200_600
+TESTING_DATA: allspec_test_200_600
 
 # preprocess training data with random offsets given below
 PREPROCESS_TEST: YES
@@ -112,19 +112,19 @@ SN_TEMPLATE_TEST: sn.robo.template
 DEBUG_MODE: NO
 
 # input binary data to use for debug mode
-DEBUG_DATA: ../repo_data/allspec_test_200_600
+DEBUG_DATA: allspec_test_200_600
 
 # toggle single multispec image mode
 SINGLE_MS_MODE: YES
 
 # multispec image to run inference on
-MS_FITS_IMAGE: ../repo_data/hyadestot.cf.bin.fits
+MS_FITS_IMAGE: jun2011_3133.fits
 
 # text file with spectrum [wavelength, flux] to use as interpolation template
-WAVE_TEMPLATE: ../repo_data/wavelength.template
+WAVE_TEMPLATE: wavelength.template
 
 # location frozen model to load
-INFER_MODEL_LOC: ../repo_saved_models/model_200_250_200_600/
+INFER_MODEL_LOC: ../repo_saved_models/example_model/
 
 # location to save summary file
 INFER_SAVE_LOC: ../repo_logs/
