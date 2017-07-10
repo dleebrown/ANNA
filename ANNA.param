@@ -45,7 +45,7 @@ NUM_FETCH: 1000
 # binary file containing training data
 TRAINING_DATA: allspec_test_200_600
 # folder to save/load model
-SAVE_LOC: ../repo_saved_models/example_model/
+SAVE_LOC: ../repo_runfiles/example_model/
 
 # minimum values of [temp, grav, [fe/h], vt, rotv]
 MIN_PARAMS: 4000.0, 2.7, -0.5, 0.0, 0.0
@@ -59,7 +59,7 @@ PP_THREADS: 1
 # preprocessing max queue depth
 MAX_PP_DEPTH: 200000
 # folder to save log files
-LOG_LOC: ../repo_logs/
+LOG_LOC: ../repo_runfiles/
 # output a .json timeline indicating various execution times (YES/NO)
 TIMELINE_OUTPUT: NO
 # log weight, cost, and graph information in the log directory for tensorboard
@@ -86,10 +86,10 @@ ES_SAMPLE: 100
 ######################
 
 # location frozen model to load
-TEST_MODEL_LOC: ../repo_saved_models/example_model/
+TEST_MODEL_LOC: ../repo_runfiles/example_model/
 
 # location to save summary file
-TEST_SAVE_LOC: ../repo_logs/
+TEST_SAVE_LOC: ../repo_runfiles/
 
 # binary file containing testing data
 TESTING_DATA: allspec_test_200_600
@@ -124,10 +124,10 @@ MS_FITS_IMAGE: jun2011_3133.fits
 WAVE_TEMPLATE: wavelength.template
 
 # location frozen model to load
-INFER_MODEL_LOC: ../repo_saved_models/example_model/
+INFER_MODEL_LOC: ../repo_runfiles/example_model/
 
 # location to save summary file
-INFER_SAVE_LOC: ../repo_logs/
+INFER_SAVE_LOC: ../repo_runfiles/
 
 
 
