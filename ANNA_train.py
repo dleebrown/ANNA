@@ -66,7 +66,7 @@ def read_known_binary(binaryfile, parameters, minvals, maxvals):
     INPUTS
     binaryfile: float64 binary file where first entry is number of pixels, second entry is the number of parameters,
     followed by wavelengths (length = num_pixels), followed by spectra, where each spectrum consists of entries
-    star params, star pixels
+    star ID, star params, dummy param, star pixels
     OUTPUTS
     wavelengths: float32 1D array containing wavelength values
     known_outputs: float32 2D array with dims [n_stars, n_params] containing parameters for each example
@@ -89,7 +89,7 @@ def read_known_binary(binaryfile, parameters, minvals, maxvals):
         print('num_params specified in binary file = '+str(num_params))
         print('num_params specified in parameter file = '+str(parameters['NUM_OUTS']))
         return
-    # each star consists of name, parameters, (trained), rotv (not trained), and pixels
+    # each star consists of name, parameters, (trained), dummy parameter (not trained), and pixels
     star_length = num_pixels+num_params+1+1
     total_array_size = np.size(floatarray)
     # trim off the wavelength and npix, nparams lengths
@@ -174,7 +174,7 @@ def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_valu
             if preprocess:
                 sn_values = np.random.uniform(sn_range[0], sn_range[1], size=(fetch_size, 1))
                 y_offsets = np.random.uniform(y_off_range[0], y_off_range[1], size=(fetch_size, 1))
-                #  strip off star num, radial velocity info
+                #  strip off star num, dummy param info
                 known = normed_outputs[select_star[:, 0], 1:-1]
                 proc_fluxes = preprocess_spectra(fluxes, interp_sn, sn_values, y_offsets)
             else:

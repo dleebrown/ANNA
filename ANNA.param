@@ -47,9 +47,12 @@ TRAINING_DATA: allspec_test_200_600
 # folder to save/load model
 SAVE_LOC: ../repo_runfiles/example_model/
 
-# minimum values of [temp, grav, [fe/h], vt, rotv]
+
+# names of the output parameters (must be same number as NUM_OUTS)
+OUTPUT_NAMES: temperature, gravity, metallicity, microturb, rotvel
+# minimum values of OUTPUT_NAMES, in order listed
 MIN_PARAMS: 4000.0, 2.7, -0.5, 0.0, 0.0
-# minimum values of [temp, grav, [fe/h], vt, rotv]
+# minimum values of OUTPUT_NAMES, in order listed
 MAX_PARAMS: 7000.0, 4.8, 0.2, 3.0, 40.0
 
 # interval (in batches) between printing cost and writing to logfiles
