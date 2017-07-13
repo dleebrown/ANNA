@@ -58,6 +58,9 @@ def unnormalize_parameters(normed_parameters, minvals, maxvals):
 
 # takes in inferred, true parameters and star names and outputs file with per-star error and prints summary stats
 def summary_statistics(parameters, star_names, normed_inferred, normed_true, minvals, maxvals):
+    param_names = parameters['OUTPUT_NAMES']
+    param_list = param_names.split(",")
+    param_list = [param_list[i].strip() for i in range(len(param_list))]
     save_location = parameters['TEST_SAVE_LOC']
     save_file = save_location + 'test_stats.out'
     star_names = np.reshape(star_names, (np.size(star_names), 1))
@@ -68,15 +71,16 @@ def summary_statistics(parameters, star_names, normed_inferred, normed_true, min
     std_stats = np.std(dtrueinf, axis=0)
     concat_results = np.concatenate((unnormed_true, dtrueinf), axis=1)
     concat_results = np.concatenate((star_names, concat_results), axis=1)
+    header = 'star_id'
+    for i in range(len(param_list)):
+        header = header+',true_'+str(param_list[i])
+    for i in range(len(param_list)):
+        header = header+',d'+str(param_list[i])
+        print('Average '+str(param_list[i])+' offset: '+str(round(mean_stats[i], 2)) + "+/-" +
+              str(round(std_stats[i], 2)))
     np.savetxt(save_file, concat_results, delimiter=',',
-               header='star_id,true_temp,true_grav,true_met,true_vt,true_rot,dtemp,dgrav,dmet,dvt,drot')
+               header=header)
     print('Test summary output in '+save_file)
-    print('Average temp offset:   '+str(round(mean_stats[0], 2)) + "+/-" + str(round(std_stats[0], 2))+' K')
-    print('Average grav offset:   '+str(round(mean_stats[1], 2)) + "+/-" + str(round(std_stats[1], 2))+' dex')
-    print('Average [Fe/H] offset: '+str(round(mean_stats[2], 2)) + "+/-" + str(round(std_stats[2], 2))+' dex')
-    print('Average vt offset:     '+str(round(mean_stats[3], 2)) + "+/-" + str(round(std_stats[3], 2))+' km/s')
-    print('Average rotv offset:   '+str(round(mean_stats[4], 2)) + "+/-" + str(round(std_stats[4], 2))+' km/s')
-
 
 # controls loading a frozen model and some test data, runs inference, and outputs statistics
 def test_frozen_model(parameters):
