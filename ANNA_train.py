@@ -21,7 +21,7 @@ def read_param_file(paramfile):
     raw_params = open(paramfile, 'r')
     param_lines = raw_params.readlines()
     for entry in param_lines:
-        if entry[0] != '#' and entry[0] != '\n':
+        if entry[0] != '#' and entry[0] != '\n' and entry[0] != '\r':
             tempstring = entry.split(':')
             param_name = str(tempstring[0])
             param_value = str(tempstring[1].strip())
@@ -390,7 +390,8 @@ def train_neural_network(parameters):
                 i.start()
         feed_dict_xval = {learning_rate: learn_rate, dropout: 1.0, batch_size: bsize, select_queue: 1}
         xval_cost, xval_sum = session.run([cost, xval_cost_sum], feed_dict=feed_dict_xval)
-        writer.add_summary(xval_sum, step + inherit_iter_count)
+        if parameters['TBOARD_OUTPUT'] == 'YES':
+            writer.add_summary(xval_sum, step + inherit_iter_count)
         # close the queue and join threads
         xvcoordinator.request_stop()
         session.run(xval_queue.close(cancel_pending_enqueues=True))

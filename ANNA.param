@@ -47,7 +47,6 @@ TRAINING_DATA: allspec_test_200_600
 # folder to save/load model
 SAVE_LOC: ../repo_runfiles/example_model/
 
-
 # names of the output parameters (must be same number as NUM_OUTS)
 OUTPUT_NAMES: temperature, gravity, metallicity, microturb, rotvel
 # minimum values of OUTPUT_NAMES, in order listed
@@ -97,7 +96,7 @@ TEST_SAVE_LOC: ../repo_runfiles/
 # binary file containing testing data
 TESTING_DATA: allspec_test_200_600
 
-# preprocess training data with random offsets given below
+# preprocess testing data with random offsets given below
 PREPROCESS_TEST: YES
 # relative continuum error bounds to sample between during training
 REL_CONT_E_TEST: -0.010, 0.010
