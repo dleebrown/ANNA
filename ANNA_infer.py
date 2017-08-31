@@ -53,6 +53,22 @@ def read_multispec_file(parameters):
     return ids, output_array
 
 
+# this reads in a text file with columns wavelength (in A), continuum normalized flux
+def read_text_file(parameters):
+    image_name = parameters['TEXT_IMAGE']
+    wavelength_template = parameters['WAVE_TEMPLATE']
+    wavelength_grid = np.loadtxt(wavelength_template)[:, 0]
+    image = np.loadtxt(image_name)
+    wavelengths = image[:, 0]
+    fluxes = image[:, 1]
+    function = ip.interp1d(wavelengths, fluxes, kind='linear')
+    interpolated_spectrum = function(wavelength_grid)
+    output_array = np.zeros((1, np.size(wavelength_grid)), dtype=np.float32)
+    output_array[0, :] = interpolated_spectrum
+    return image_name, output_array
+
+
+
 # this is just a wrapper to slice input binaries of the form used for training - only used in debug mode
 def debug_mode_input_handler(normed_outputs, pix_values):
     known = normed_outputs[:, 1:-1]
@@ -89,7 +105,7 @@ def save_output(parameters, star_names, normed_inferred, minvals, maxvals):
     for i in range(len(param_list)):
         header = header+',infer_'+str(param_list[i])
     np.savetxt(save_file, concat_results, delimiter=',',
-               header=header)
+               header=header, fmt='%s')
     print('Inference summary output in '+save_file)
 
 
@@ -99,16 +115,22 @@ def run_inference(parameters):
     minvals = np.fromstring(parameters['MIN_PARAMS'], sep=', ', dtype=np.float32)
     maxvals = np.fromstring(parameters['MAX_PARAMS'], sep=', ', dtype=np.float32)
     num_px = int(parameters['NUM_PX'])
-    if parameters['DEBUG_MODE'] == 'YES':
+    if parameters['INFER_MODE'] == 'DEBUG':
         # debug mode assumes inputs of the binary form (with parameters) used for training and testing
         wavelengths, normed_outputs, pix_values = \
             read_known_binary(parameters['DEBUG_DATA'], parameters, minvals, maxvals)
         # set to read in the entire test set when running inference in debug mode
         total_num_stars = np.size(normed_outputs[:, 0])
         star_ids, spectra, _ = debug_mode_input_handler(normed_outputs, pix_values)
-    elif parameters['SINGLE_MS_MODE'] == 'YES':
+    elif parameters['INFER_MODE'] == 'MS_FITS':
         star_ids, spectra = read_multispec_file(parameters)
         total_num_stars = np.size(star_ids)
+    elif parameters['INFER_MODE'] == 'TEXT':
+        star_ids, spectra = read_text_file(parameters)
+        total_num_stars = 1
+    else:
+        print('Incorrect read-in mode selected, options are DEBUG, MS_FITS, and TEXT')
+        quit()
     # define a few new ops to use as inputs instead of a queue
     with tf.Graph().as_default() as graph:
         input_px = tf.placeholder(tf.float32, shape=[None, num_px], name='input_px')
