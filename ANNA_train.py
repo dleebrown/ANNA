@@ -148,7 +148,7 @@ def preprocess_spectra(fluxes, interpolated_sn, sn_array, y_offset_array):
 
 
 def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_values, sn_range, interp_sn, y_off_range,
-                 fetch_size, randomize, preprocess):
+                 fetch_size, randomize, preprocess, queuetype):
     """basically a wrapper function that takes in fluxes and raw params and adds a random preprocessed example to queue
     INPUTS
     session: tensorflow session
@@ -180,11 +180,18 @@ def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_valu
             else:
                 known = normed_outputs[select_star[:, 0], 1:-1]
                 proc_fluxes = fluxes
-            try:
-                session.run(queue_operation, feed_dict={image_data: proc_fluxes, known_params: known})
-            except tf.errors.CancelledError:
-                if randomize:
-                    print('Input queue closed, exiting training')
+            if queuetype == 'train_q':
+                try:
+                    session.run(queue_operation, feed_dict={image_data: proc_fluxes, known_params: known})
+                except tf.errors.CancelledError:
+                    if randomize:
+                        print('Input queue closed, exiting training')
+            if queuetype == 'xval_q':
+                try:
+                    session.run(queue_operation, feed_dict={xval_data: proc_fluxes, xval_params: known})
+                except tf.errors.CancelledError:
+                    if randomize:
+                        print('Input queue closed, exiting training')
 
 
 # freezes a tensorflow model to be reloaded later
@@ -249,7 +256,7 @@ if __name__ == '__main__':
     with tf.name_scope('MASTER_QUEUE'):
         select_queue = tf.placeholder(tf.int32, [])
         master_queue = tf.QueueBase.from_list(select_queue, [input_queue, xval_queue])
-        batch_outputs, batch_pixels = input_queue.dequeue_many(batch_size)
+        batch_outputs, batch_pixels = master_queue.dequeue_many(batch_size)
         # add some redundant identity ops to add in naming (convnet2 doesn't support names)
         batch_pixels = tf.identity(batch_pixels, name='px')
         batch_outputs = tf.identity(batch_outputs, name='output')
@@ -372,6 +379,7 @@ def train_neural_network(parameters):
 
     # subloop definition to build a separate queue for xval data if it exists and calculate the cost
     def xval_subloop(learn_rate, bsize, step, inherit_iter_count):
+        queuetype = 'xval_q'
         xvcoordinator = tf.train.Coordinator()
         randomize = False
         # if xval preprocessing desired, flip the correct flat in add_to_queue
@@ -384,8 +392,8 @@ def train_neural_network(parameters):
         with tf.device("/cpu:0"):
             xval_threads = [threading.Thread(target=add_to_queue, args=(session, xval_op, xvcoordinator, xv_norm_out,
                                                                         xv_px_val, sn_range, interp_sn, y_off_range,
-                                                                        xv_size, randomize,
-                                                                        xval_training)) for i in range(num_xvthread)]
+                                                                        xv_size, randomize, xval_training,
+                                                                        queuetype)) for i in range(num_xvthread)]
             for i in xval_threads:
                 i.start()
         feed_dict_xval = {learning_rate: learn_rate, dropout: 1.0, batch_size: bsize, select_queue: 1}
@@ -394,7 +402,7 @@ def train_neural_network(parameters):
             writer.add_summary(xval_sum, step + inherit_iter_count)
         # close the queue and join threads
         xvcoordinator.request_stop()
-        session.run(xval_queue.close(cancel_pending_enqueues=True))
+        # session.run(xval_queue.close(cancel_pending_enqueues=True))
         xvcoordinator.join(xval_threads)
         # return cost
         return round(xval_cost, 2)
@@ -413,15 +421,16 @@ def train_neural_network(parameters):
         # force preprocessing to run on the cpu
         with tf.device("/cpu:0"):
             num_threads = int(parameters['PP_THREADS'])
+            queuetype = 'train_q'
             enqueue_threads = [threading.Thread(target=add_to_queue, args=(session, queue_op, coordinator,
                                                                            normed_outputs, pix_values, sn_range,
                                                                            interp_sn, y_off_range, fetch_size,
-                                                                           randomize,
-                                                                           pp_training)) for i in range(num_threads)]
+                                                                           randomize, pp_training,
+                                                                           queuetype)) for i in range(num_threads)]
             for i in enqueue_threads:
                 i.start()
         # delay running training by 1 second in order to prefill the queue
-        time.sleep(1)
+        #time.sleep(1)
         feed_dict_train = {learning_rate: learn_rate, dropout: keep_prob, batch_size: bsize, select_queue: 0}
         # controls early stopping threshold
         early_stop_counter = 0
