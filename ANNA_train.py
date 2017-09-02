@@ -242,7 +242,7 @@ if __name__ == '__main__':
     with tf.name_scope('XVAL_QUEUE'):
         xval_queue = tf.FIFOQueue(capacity=pp_depth, dtypes=[tf.float32, tf.float32],
                                   shapes=[[num_outputs], [num_px]])
-        xval_op = xval_queue.enqueue_many([known_params, image_data])
+        xval_op = xval_queue.enqueue_many([xval_params, xval_data])
         tf.add_to_collection('xval_op', xval_op)
         tf.add_to_collection('xval_queue', xval_queue)
 
