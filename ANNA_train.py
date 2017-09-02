@@ -402,7 +402,6 @@ def train_neural_network(parameters):
             writer.add_summary(xval_sum, step + inherit_iter_count)
         # close the queue and join threads
         xvcoordinator.request_stop()
-        # session.run(xval_queue.close(cancel_pending_enqueues=True))
         xvcoordinator.join(xval_threads)
         # return cost
         return round(xval_cost, 2)
@@ -508,6 +507,8 @@ def train_neural_network(parameters):
         # close the preprocessing queues and join threads
         coordinator.request_stop()
         session.run(input_queue.close(cancel_pending_enqueues=True))
+        if parameters['TRAINING_XVAL'] == 'YES':
+            session.run(xval_queue.close(cancel_pending_enqueues=True))
         coordinator.join(enqueue_threads)
         end_time = time.time()
         # return the run time and total completed iterations
