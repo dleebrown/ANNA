@@ -261,7 +261,7 @@ if __name__ == '__main__':
 
     # initialize weights and biases for conv layer 1
     with tf.name_scope('CONV1_TENSORS'):
-        stdev1 = math.sqrt(2.0 / cl1_shape[1])
+        stdev1 = math.sqrt(2.0 / float(cl1_shape[0]*cl1_shape[1]*cl1_shape[2]))
         cl1_weight = cv.generate_weights(cl1_shape, type='custom',
                                              function=tf.random_normal(cl1_shape, mean=0.00, stddev=stdev1))
         cl1_bias = cv.generate_bias(length=cl1_shape[3], value=0.00)
@@ -277,7 +277,7 @@ if __name__ == '__main__':
     # initialize weights and biases for fully connected layer 1
     with tf.name_scope('FC1_TENSORS'):
         fc1_shape = [num_params, fc1_num_weights]
-        stdev3 = math.sqrt(2.0 / (num_px * cl1_shape[3]))
+        stdev3 = math.sqrt(2.0 / float(fc1_num_weights*fc2_num_weights))
         fc1_weight = cv.generate_weights(fc1_shape, type='custom',
                                              function=tf.random_normal(fc1_shape, mean=0.00, stddev=stdev3))
         fc1_bias = cv.generate_bias(fc1_num_weights, value=0.00)
@@ -291,7 +291,7 @@ if __name__ == '__main__':
     # initialize weights for fully connected layer 2
     with tf.name_scope('FC2_TENSORS'):
         fc2_shape = [fc1_num_weights, fc2_num_weights]
-        stdev4 = math.sqrt(2.0 / fc1_num_weights)
+        stdev4 = math.sqrt(2.0 / float(fc2_num_weights*num_outputs))
         fc2_weight = cv.generate_weights(fc2_shape, type='custom',
                                              function=tf.random_normal(fc2_shape, mean=0.00, stddev=stdev4))
         fc2_bias = cv.generate_bias(fc2_num_weights, value=0.00)
@@ -305,7 +305,7 @@ if __name__ == '__main__':
     # initialize weights for output layer of network
     with tf.name_scope('FC3_TENSORS'):
         fc3_shape = [fc2_num_weights, num_outputs]
-        stdev5 = math.sqrt(2.0 / fc2_num_weights)
+        stdev5 = math.sqrt(2.0 / float(num_outputs))
         fc3_weight = cv.generate_weights(fc3_shape, type='custom',
                                              function=tf.random_normal(fc3_shape, mean=0.00, stddev=stdev5))
 
