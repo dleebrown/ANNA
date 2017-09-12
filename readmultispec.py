@@ -30,6 +30,8 @@ wavefields  [NORDERS] List with the analytical wavelength
 History:
 Created by Rick White based on my IDL readechelle.pro, 2012 August 15
 Apologies for any IDL-isms that remain!
+
+NOTE: the redshift has been hard-coded to be 0 in this version
 """
 
 import numpy as np
@@ -237,6 +239,8 @@ def readmultispec(fitsfile, reform=True, quiet=False):
             # non-linear wavelengths
             wavelen[i, :], wavefields[i] = nonlinearwave(nwave, specstr[i],
                                                          verbose=verbose)
+	# set redshift to be 0 throughout. 
+	wparms[i, 6] = 0.00000000
         wavelen *= 1.0 + wparms[i, 6]
         if verbose:
             print("Correcting for redshift: z=%f" % wparms[i, 6])
