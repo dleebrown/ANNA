@@ -187,11 +187,17 @@ def add_to_queue(session, queue_operation, coordinator, normed_outputs, pix_valu
                     if randomize:
                         print('Input queue closed, exiting training')
             if queuetype == 'xval_q':
-                try:
-                    session.run(queue_operation, feed_dict={xval_data: proc_fluxes, xval_params: known})
-                except tf.errors.CancelledError:
-                    if randomize:
-                        print('Input queue closed, exiting training')
+                xval_enqueued = session.run(xval_queue.size(), feed_dict={xval_data: proc_fluxes, xval_params: known})
+                if xval_enqueued <= int(parameters['MAX_PP_DEPTH']) - int(parameters['XVAL_SIZE']):
+                    try:
+                        session.run(queue_operation, feed_dict={xval_data: proc_fluxes, xval_params: known},
+                                    options=tf.RunOptions(timeout_in_ms=5000))
+                    except tf.errors.DeadlineExceededError:
+                        sizes = session.run(xval_queue.size(), feed_dict={xval_data: proc_fluxes, xval_params: known})
+                        print('Cross-validation enqueue error, current queue size: '+str(sizes))
+                    except tf.errors.CancelledError:
+                        if randomize:
+                            print('Input queue closed, exiting training')
 
 
 # freezes a tensorflow model to be reloaded later
@@ -388,7 +394,8 @@ def train_neural_network(parameters):
         else:
             xval_training = False
         num_xvthread = int(parameters['XV_THREADS'])
-        # force preprocessing to run on the cpu
+        # force preprocessing to run on the cpu - this is actually not optimal since the threads will be respawned and
+        # every time xval subloop run but for smaller xval sizes this shouldn't matter much
         with tf.device("/cpu:0"):
             xval_threads = [threading.Thread(target=add_to_queue, args=(session, xval_op, xvcoordinator, xv_norm_out,
                                                                         xv_px_val, sn_range, interp_sn, y_off_range,
@@ -516,7 +523,7 @@ def train_neural_network(parameters):
 
     # control flow for training - load in save location, etc. launch tensorflow session, prepare saver
     model_dir = parameters['SAVE_LOC']
-    session = tf.Session()
+    session = tf.Session(config=tf.ConfigProto())
     options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
     run_metadata = tf.RunMetadata()
     session.run(tf.global_variables_initializer())
