@@ -5,4 +5,6 @@ ANNA is currently in a "beta" state. It has been successfully used to classify s
 
 If you are interested in using ANNA, look for Lee-Brown et. al (2018, in prep), which will discuss the performance of ANNA under a range of use conditions and demonstrate its capabilities. If you are not interested in waiting that long or have questions about ANNA that aren't answered in the manual, feel free to get in touch with me. 
 
+Author: Donald Lee-Brown (donald at ku dot edu)
+
 This work was partially supported by NSF grant AST-1211621. 
