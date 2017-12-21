@@ -14,7 +14,7 @@ NUM_OUTS: 5
 # learning rate for first stage of training
 LEARN_RATE1: 5e-5
 # number of iterations for first stage of training
-NUM_TRAIN_ITERS1: 5000
+NUM_TRAIN_ITERS1: 1000
 # batch size for first stage of training
 BATCH_SIZE1: 100
 # probability to retain node during first stage of training
