@@ -14,14 +14,14 @@ NUM_OUTS: 5
 # learning rate for first stage of training
 LEARN_RATE1: 5e-5
 # number of iterations for first stage of training
-NUM_TRAIN_ITERS1: 1000
+NUM_TRAIN_ITERS1: 5000
 # batch size for first stage of training
 BATCH_SIZE1: 100
 # probability to retain node during first stage of training
-KEEP_PROB1: 0.8
+KEEP_PROB1: 1.0
 
 # flag to control second stage (YES/NO)
-DO_TRAIN2: YES
+DO_TRAIN2: NO
 # learning rate for second stage of training
 LEARN_RATE2: 1e-6
 # number of iterations for second stage of training
@@ -32,7 +32,7 @@ BATCH_SIZE2: 100
 KEEP_PROB2: 1.0
 
 # preprocess training data with random offsets given below
-PREPROCESS_TRAIN: YES
+PREPROCESS_TRAIN: NO
 # relative continuum error bounds to sample between during training
 REL_CONT_E_TRAIN: -0.010, 0.010
 # signal-to-noise bounds to sample between during training
