@@ -111,7 +111,7 @@ SN_TEMPLATE_TEST: sn.robo.template
 ########################
 
 # format to use to read in inference data: DEBUG, MS_FITS, TEXT
-INFER_MODE: DEBUG
+INFER_MODE: MS_FITS
 
 # if debug mode used, input binary data file
 DEBUG_DATA: allspec_test_200_600

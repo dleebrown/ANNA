@@ -50,7 +50,9 @@ def read_multispec_file(parameters):
         function = ip.interp1d(current_wavelengths, current_fluxes, kind='linear')
         interpolated_spectrum = function(wavelength_grid)
         output_array[entry, :] = interpolated_spectrum
-    return ids, output_array
+    if '/' in image_name:
+        image_name = image_name.split('/')[-1]
+    return ids, output_array, image_name
 
 
 # this reads in a text file with columns wavelength (in A), continuum normalized flux
@@ -65,7 +67,9 @@ def read_text_file(parameters):
     interpolated_spectrum = function(wavelength_grid)
     output_array = np.zeros((1, np.size(wavelength_grid)), dtype=np.float32)
     output_array[0, :] = interpolated_spectrum
-    return image_name, output_array
+    if '/' in image_name:
+        image_name = image_name.split('/')[-1]
+    return image_name, output_array, image_name
 
 
 
@@ -92,12 +96,12 @@ def unnormalize_parameters(normed_parameters, minvals, maxvals):
 
 
 # takes in inferred parameters and star names and outputs file with per-star parameters
-def save_output(parameters, star_names, normed_inferred, minvals, maxvals):
+def save_output(parameters, star_names, normed_inferred, minvals, maxvals, imname):
     param_names = parameters['OUTPUT_NAMES']
     param_list = param_names.split(",")
     param_list = [param_list[i].strip() for i in range(len(param_list))]
     save_location = parameters['INFER_SAVE_LOC']
-    save_file = save_location + 'infer_stats.out'
+    save_file = save_location + str(imname)+'_infer.out'
     star_names = np.reshape(star_names, (np.size(star_names), 1))
     unnormed_inferred = unnormalize_parameters(normed_inferred, minvals, maxvals)
     concat_results = np.concatenate((star_names, unnormed_inferred), axis=1)
@@ -122,11 +126,12 @@ def run_inference(parameters):
         # set to read in the entire test set when running inference in debug mode
         total_num_stars = np.size(normed_outputs[:, 0])
         star_ids, spectra, _ = debug_mode_input_handler(normed_outputs, pix_values)
+        image_name = 'debug'
     elif parameters['INFER_MODE'] == 'MS_FITS':
-        star_ids, spectra = read_multispec_file(parameters)
+        star_ids, spectra, image_name = read_multispec_file(parameters)
         total_num_stars = np.size(star_ids)
     elif parameters['INFER_MODE'] == 'TEXT':
-        star_ids, spectra = read_text_file(parameters)
+        star_ids, spectra, image_name = read_text_file(parameters)
         total_num_stars = 1
     else:
         print('Incorrect read-in mode selected, options are DEBUG, MS_FITS, and TEXT')
@@ -143,7 +148,7 @@ def run_inference(parameters):
     session = tf.Session(graph=graph)
     outputs = session.run(outputs, feed_dict={input_px: spectra, dropout: 1.0, batch_size: total_num_stars})
     # save the outputs to specified file
-    save_output(parameters, star_ids, outputs, minvals, maxvals)
+    save_output(parameters, star_ids, outputs, minvals, maxvals, image_name)
     session.close()
 
 if __name__ == '__main__':
